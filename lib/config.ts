@@ -4,7 +4,7 @@ export const siteConfig: SiteConfig = {
   name: "LXW的技术博客",
   description:
     "专注于前端技术、React、Next.js、TypeScript 等现代 Web 开发技术分享",
-  url: "https://lixiaowei11111.github.io",
+  url: "https://redpandaex.github.io",
   author: {
     id: "lixiaowei",
     name: "LXW",
@@ -12,9 +12,9 @@ export const siteConfig: SiteConfig = {
     avatar: "/images/avatar.jpg",
     email: "lxw.tech.dev@gmail.com",
     social: {
-      github: "https://github.com/lixiaowei11111",
+      github: "https://github.com/redpandaex",
       twitter: "https://x.com/lxw_xw",
-      website: "https://lixiaowei11111.github.io",
+      website: "https://redpandaex.github.io",
     },
   },
   navigation: [
@@ -44,7 +44,7 @@ export const siteConfig: SiteConfig = {
     },
   ],
   social: {
-    github: "https://github.com/lixiaowei11111",
+    github: "https://github.com/redpandaex",
     twitter: "https://x.com/lxw_xw",
   },
 };

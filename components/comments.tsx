@@ -42,7 +42,7 @@ export function Comments({ slug }: CommentsProps) {
       {/* 参照教程开通, https://giscus.app/zh-CN */}
       <Giscus
         id="comments"
-        repo="lixiaowei11111/lixiaowei11111.github.io" // 替换为你的仓库
+        repo="redpandaex/redpandaex.github.io" // 替换为你的仓库
         repoId="R_kgDOPlqp9g" // 需要从https://giscus.app/zh-CN/GitHub获取
         category="Announcements" // 或者你创建的其他分类
         categoryId="DIC_kwDOPlqp9s4CutCx" // 需要从https://giscus.app/zh-CN/GitHub获取

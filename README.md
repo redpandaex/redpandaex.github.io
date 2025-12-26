@@ -1,8 +1,8 @@
 # 李小伟的技术博客
 
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Flixiaowei11111.github.io&up_message=online&down_message=offline&style=for-the-badge&logo=vercel)](https://lixiaowei11111.github.io)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Flixiaowei11111.github.io&up_message=online&down_message=offline&style=for-the-badge&logo=vercel)](https://redpandaex.github.io)
 
-🌐 **在线访问**: [https://lixiaowei11111.github.io](https://lixiaowei11111.github.io)
+🌐 **在线访问**: [https://redpandaex.github.io](https://redpandaex.github.io)
 
 ![Next.js](https://img.shields.io/badge/Next.js-15.5.2-black)
 ![React](https://img.shields.io/badge/React-19.1.0-blue)
@@ -59,8 +59,8 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/lixiaowei11111/lixiaowei11111.github.io.git
-cd lixiaowei11111.github.io
+git clone https://github.com/redpandaex/redpandaex.github.io.git
+cd redpandaex.github.io
 
 # 安装依赖
 pnpm install
@@ -224,8 +224,8 @@ pnpm format
 
 **LXW**
 
-- GitHub: [@lixiaowei11111](https://github.com/lixiaowei11111)
-- 网站: [https://lixiaowei11111.github.io](https://lixiaowei11111.github.io)
+- GitHub: [@redpandaex](https://github.com/redpandaex)
+- 网站: [https://redpandaex.github.io](https://redpandaex.github.io)
 
 ## 🙏 致谢
 

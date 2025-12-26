@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://lixiaowei11111.github.io',
+  siteUrl: 'https://redpandaex.github.io',
   generateRobotsTxt: true,
   sitemapSize: 7000,
   outDir: 'out', // 因为您使用的是output: "export"，所以输出目录是 "out"
@@ -12,7 +12,7 @@ module.exports = {
   ],
   robotsTxtOptions: {
     additionalSitemaps: [
-      'https://lixiaowei11111.github.io/server-sitemap.xml', // 如果您有动态生成的页面
+      'https://redpandaex.github.io/server-sitemap.xml', // 如果您有动态生成的页面
     ],
     policies: [
       {

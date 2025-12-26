@@ -1,8 +1,8 @@
 {
-  "name": "lixiaowei11111.github.io",
+  "name": "redpandaex.github.io",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://lixiaowei11111.github.io",
+  "homepage": "https://redpandaex.github.io",
   "scripts": {
     "dev": "next dev -p 9966",
     "build": "next build",
