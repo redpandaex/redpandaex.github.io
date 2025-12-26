@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   verification: {
-    google: "jZIW_JJilnDkihlbOvJH_2viVeLvwWXCACY_agwifhU",
+    google: "tBRpKoapUXsQYxUQfQg-_sr3QJjFWptBSQKQCTJsC",
     other: {
       "msvalidate.01": "251506A8C8052BFBD12CD6A66D49B33A",
     },
