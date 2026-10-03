@@ -27,10 +27,6 @@ export const siteConfig: SiteConfig = {
       href: "/blog",
     },
     {
-      label: "实验",
-      href: "/projects",
-    },
-    {
       label: "关于",
       href: "/about",
     },

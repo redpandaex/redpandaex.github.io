@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Footer } from "@/components/footer";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { Navbar } from "@/components/navbar";
+import { MotionProvider } from "@/components/motion-provider";
+import { PaletteProvider } from "@/components/palette-provider";
+import { ArticleTransitionProvider } from "@/components/article-transition";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { ThemeProvider } from "@/components/theme-provider";
 import { siteConfig } from "@/lib/config";
@@ -110,22 +113,28 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider defaultTheme="light" storageKey="ui-theme">
-          {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
-            <GoogleAnalytics
-              measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
-            />
-          )}
-          <a href="#main-content" className="skip-link">
-            跳转到主要内容
-          </a>
-          <ScrollProgress />
-          <Navbar posts={getAllPosts().map(summarizePost)} />
-          <div className="site-shell relative z-10 flex min-h-screen flex-col">
-            <main id="main-content" className="flex-1" tabIndex={-1}>
-              {children}
-            </main>
-            <Footer />
-          </div>
+          <MotionProvider>
+            <PaletteProvider>
+              <ArticleTransitionProvider>
+                {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+                  <GoogleAnalytics
+                    measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
+                  />
+                )}
+                <a href="#main-content" className="skip-link">
+                  跳转到主要内容
+                </a>
+                <ScrollProgress />
+                <Navbar posts={getAllPosts().map(summarizePost)} />
+                <div className="site-shell relative z-10 flex min-h-screen flex-col">
+                  <main id="main-content" className="flex-1" tabIndex={-1}>
+                    {children}
+                  </main>
+                  <Footer />
+                </div>
+              </ArticleTransitionProvider>
+            </PaletteProvider>
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>

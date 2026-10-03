@@ -31,6 +31,9 @@ export const defaultConfig: FluidConfig = {
   SUNRAYS: true,
   SUNRAYS_RESOLUTION: 196,
   SUNRAYS_WEIGHT: 1.0,
+  INITIAL_SPLATS: 12,
+  MAX_PIXEL_RATIO: 2,
+  FRAME_RATE: 60,
 };
 
 // 移动端配置调整

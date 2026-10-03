@@ -1,18 +1,22 @@
 "use client";
 
 import { gsap } from "gsap";
-import { MoveUpRight, RotateCcw, Shuffle } from "lucide-react";
+import { Palette, RotateCcw } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { useMotion } from "./motion-provider";
+import { usePalette } from "./palette-provider";
+import { studioPalettes } from "@/lib/studio-palettes";
 
 export function HeroArt() {
-  const artwork = useRef<HTMLDivElement>(null);
+  const artwork = useRef<HTMLButtonElement>(null);
   const stage = useRef<HTMLDivElement>(null);
-  const [palette, setPalette] = useState(0);
+  const { palette, choose, shuffle } = usePalette();
+  const { active } = useMotion();
   useEffect(() => {
     const element = artwork.current;
     const container = stage.current;
-    if (!element || !container) return;
+    if (!element || !container || !active) return;
     const media = gsap.matchMedia();
     media.add(
       "(prefers-reduced-motion: no-preference) and (pointer: fine)",
@@ -47,47 +51,59 @@ export function HeroArt() {
       },
     );
     return () => media.revert();
-  }, []);
+  }, [active]);
   return (
-    <div ref={stage} className={`hero-stage palette-${palette}`}>
-      <div ref={artwork} className="hero-artwork">
+    <div ref={stage} className="hero-stage panda-palette-stage">
+      <button
+        type="button"
+        ref={artwork}
+        className="hero-artwork panda-palette-button"
+        aria-label="让小熊猫为整个网站换一组配色"
+        onClick={shuffle}
+      >
         <Image
           src="/images/redpanda-studio.webp"
           alt="戴蓝色眼镜的小熊猫，漂浮在珊瑚色、蓝色、紫色的几何玩具之间"
           width={1448}
           height={1086}
           priority
-          sizes="(max-width: 767px) 100vw, 55vw"
+          sizes="(max-width: 600px) 120px, 300px"
           className="panda-image"
         />
-      </div>
+        <span className="panda-palette-invite">
+          <Palette size={14} /> 点我，换个心情
+        </span>
+      </button>
       <div className="art-corner" aria-hidden="true">
-        <MoveUpRight size={25} />
+        <Palette size={21} />
       </div>
       <div className="art-toolbar">
-        <span className="art-hint">一点代码，一点好奇心。</span>
-        <div>
-          <button
-            type="button"
-            className="art-control"
-            aria-label="切换画布配色"
-            onClick={() => setPalette((value) => (value + 1) % 3)}
-          >
-            <Shuffle size={17} />
-            <span>换个配色</span>
-          </button>
-          <button
-            type="button"
-            className="art-control"
-            aria-label="重置画布配色"
-            onClick={() => setPalette(0)}
-          >
-            <RotateCcw size={16} />
-          </button>
-        </div>
+        <fieldset className="palette-swatches" aria-label="网站配色">
+          {studioPalettes.map((item) => (
+            <button
+              type="button"
+              key={item.id}
+              className={`palette-swatch swatch-${item.id}`}
+              aria-label={`使用${item.name}配色`}
+              aria-pressed={item.id === palette.id}
+              title={item.name}
+              onClick={() => choose(item.id)}
+            >
+              <span aria-hidden="true" />
+            </button>
+          ))}
+        </fieldset>
+        <button
+          type="button"
+          className="art-control"
+          aria-label="重置网站配色"
+          onClick={() => choose("electric")}
+        >
+          <RotateCcw size={16} />
+        </button>
       </div>
-      <span className="sr-only" aria-live="polite">
-        画布配色：{["蓝色", "桃色", "紫色"][palette]}
+      <span className="palette-name" aria-live="polite">
+        {palette.name}
       </span>
     </div>
   );

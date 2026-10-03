@@ -118,8 +118,10 @@ export function getWebGLContext(
     halfFloatTexType = (gl as WebGL2RenderingContext).HALF_FLOAT;
   } else {
     const halfFloat = gl.getExtension("OES_texture_half_float");
+    gl.getExtension("EXT_color_buffer_half_float");
+    if (!halfFloat) return null;
     supportLinearFiltering = gl.getExtension("OES_texture_half_float_linear");
-    halfFloatTexType = halfFloat ? halfFloat.HALF_FLOAT_OES : gl.UNSIGNED_BYTE;
+    halfFloatTexType = halfFloat.HALF_FLOAT_OES;
   }
 
   gl.clearColor(0.0, 0.0, 0.0, 1.0);

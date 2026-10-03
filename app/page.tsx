@@ -1,58 +1,51 @@
-import { ArrowUpRight, Braces, MoveUpRight, WandSparkles } from "lucide-react";
+import { ArrowUpRight, Braces } from "lucide-react";
 import Link from "next/link";
 import { AnimatedElement } from "@/components/animated-element";
 import { ArticleExplorer } from "@/components/article-explorer";
+import { AmbientSurface } from "@/components/ambient-surface";
 import { Hero } from "@/components/hero";
 import { getAllPosts } from "@/lib/mdx";
 import { summarizePost } from "@/lib/utils";
+import type { ManuscriptSnippet } from "@/components/manuscript-desk";
 
 export default function Home() {
-  const posts = getAllPosts().map(summarizePost);
+  const originals = getAllPosts().slice(0, 6);
+  const posts = originals.map(summarizePost);
+  const snippets: Record<string, ManuscriptSnippet> = {};
+  for (const post of originals) {
+    const block = post.content.match(/```([\w]+)[^\n]*\n([\s\S]*?)```/);
+    if (block)
+      snippets[post.slug] = {
+        language: block[1],
+        code: block[2].trim().split("\n").slice(0, 6).join("\n"),
+      };
+  }
   return (
     <>
-      <Hero />
-      <section
-        id="content"
-        className="site-container writing-section studio-writing"
-      >
-        <div className="section-heading">
-          <div>
-            <span className="mono-label section-index">
-              02 / NOTES FROM THE DESK
-            </span>
-            <h2>
-              最近写下的
-              <span className="heading-asterisk" aria-hidden="true">
-                *
-              </span>
-            </h2>
+      <Hero latestPost={posts[0]} />
+      <section id="content">
+        <AmbientSurface
+          kind="grid"
+          className="site-container writing-section studio-writing"
+        >
+          <div className="section-heading">
+            <div>
+              <h2>
+                我的创作手稿
+                <span className="heading-asterisk" aria-hidden="true">
+                  *
+                </span>
+              </h2>
+              <p className="desk-description">
+                代码、思考，还有写到一半的好奇心。
+              </p>
+            </div>
+            <Link href="/blog" className="text-link">
+              进入文章库 <ArrowUpRight size={19} />
+            </Link>
           </div>
-          <Link href="/blog" className="text-link">
-            进入文章库 <ArrowUpRight size={19} />
-          </Link>
-        </div>
-        <ArticleExplorer posts={posts.slice(0, 6)} compact />
-      </section>
-      <section className="site-container side-quests">
-        <div className="quests-intro">
-          <span className="mono-label section-index">03 / SIDE QUESTS</span>
-          <h2>顺手，做点好玩的。</h2>
-          <p>想法落地的另一个出口。</p>
-        </div>
-        <Link href="/projects" className="quest-link">
-          <Braces size={28} />
-          <span>
-            引力与网格<small>让点阵跟着你的手指呼吸。</small>
-          </span>
-          <MoveUpRight size={21} />
-        </Link>
-        <Link href="/test-fluid" className="quest-link">
-          <WandSparkles size={28} />
-          <span>
-            色彩流动实验<small>随手画一场，属于你的涡流。</small>
-          </span>
-          <MoveUpRight size={21} />
-        </Link>
+          <ArticleExplorer posts={posts} compact snippets={snippets} />
+        </AmbientSurface>
       </section>
       <AnimatedElement className="site-container about-strip">
         <Braces size={38} />
