@@ -8,11 +8,11 @@ export const baseVertexShaderSource = `
   precision highp float;
 
   attribute vec2 aPosition;
-  varying vec2 vUv;
-  varying vec2 vL;
-  varying vec2 vR;
-  varying vec2 vT;
-  varying vec2 vB;
+  varying highp vec2 vUv;
+  varying highp vec2 vL;
+  varying highp vec2 vR;
+  varying highp vec2 vT;
+  varying highp vec2 vB;
   uniform vec2 texelSize;
 
   void main () {
@@ -30,9 +30,9 @@ export const blurVertexShaderSource = `
   precision highp float;
 
   attribute vec2 aPosition;
-  varying vec2 vUv;
-  varying vec2 vL;
-  varying vec2 vR;
+  varying highp vec2 vUv;
+  varying highp vec2 vL;
+  varying highp vec2 vR;
   uniform vec2 texelSize;
 
   void main () {
@@ -49,9 +49,9 @@ export const blurShaderSource = `
   precision mediump float;
   precision mediump sampler2D;
 
-  varying vec2 vUv;
-  varying vec2 vL;
-  varying vec2 vR;
+  varying highp vec2 vUv;
+  varying highp vec2 vL;
+  varying highp vec2 vR;
   uniform sampler2D uTexture;
 
   void main () {
@@ -105,7 +105,7 @@ export const checkerboardShaderSource = `
   precision highp float;
   precision highp sampler2D;
 
-  varying vec2 vUv;
+  varying highp vec2 vUv;
   uniform sampler2D uTexture;
   uniform float aspectRatio;
 
@@ -124,11 +124,11 @@ export const displayShaderSource = `
   precision highp float;
   precision highp sampler2D;
 
-  varying vec2 vUv;
-  varying vec2 vL;
-  varying vec2 vR;
-  varying vec2 vT;
-  varying vec2 vB;
+  varying highp vec2 vUv;
+  varying highp vec2 vL;
+  varying highp vec2 vR;
+  varying highp vec2 vT;
+  varying highp vec2 vB;
   uniform sampler2D uTexture;
   uniform sampler2D uBloom;
   uniform sampler2D uSunrays;
@@ -190,7 +190,7 @@ export const bloomPrefilterShaderSource = `
   precision mediump float;
   precision mediump sampler2D;
 
-  varying vec2 vUv;
+  varying highp vec2 vUv;
   uniform sampler2D uTexture;
   uniform vec3 curve;
   uniform float threshold;
@@ -210,10 +210,10 @@ export const bloomBlurShaderSource = `
   precision mediump float;
   precision mediump sampler2D;
 
-  varying vec2 vL;
-  varying vec2 vR;
-  varying vec2 vT;
-  varying vec2 vB;
+  varying highp vec2 vL;
+  varying highp vec2 vR;
+  varying highp vec2 vT;
+  varying highp vec2 vB;
   uniform sampler2D uTexture;
 
   void main () {
@@ -232,10 +232,10 @@ export const bloomFinalShaderSource = `
   precision mediump float;
   precision mediump sampler2D;
 
-  varying vec2 vL;
-  varying vec2 vR;
-  varying vec2 vT;
-  varying vec2 vB;
+  varying highp vec2 vL;
+  varying highp vec2 vR;
+  varying highp vec2 vT;
+  varying highp vec2 vB;
   uniform sampler2D uTexture;
   uniform float intensity;
 
@@ -255,7 +255,7 @@ export const sunraysMaskShaderSource = `
   precision highp float;
   precision highp sampler2D;
 
-  varying vec2 vUv;
+  varying highp vec2 vUv;
   uniform sampler2D uTexture;
 
   void main () {
@@ -271,7 +271,7 @@ export const sunraysShaderSource = `
   precision highp float;
   precision highp sampler2D;
 
-  varying vec2 vUv;
+  varying highp vec2 vUv;
   uniform sampler2D uTexture;
   uniform float weight;
 
@@ -306,7 +306,7 @@ export const splatShaderSource = `
   precision highp float;
   precision highp sampler2D;
 
-  varying vec2 vUv;
+  varying highp vec2 vUv;
   uniform sampler2D uTarget;
   uniform float aspectRatio;
   uniform vec3 color;
@@ -327,7 +327,7 @@ export const advectionShaderSource = `
   precision highp float;
   precision highp sampler2D;
 
-  varying vec2 vUv;
+  varying highp vec2 vUv;
   uniform sampler2D uVelocity;
   uniform sampler2D uSource;
   uniform vec2 texelSize;
@@ -418,11 +418,11 @@ export const vorticityShaderSource = `
   precision highp float;
   precision highp sampler2D;
 
-  varying vec2 vUv;
-  varying vec2 vL;
-  varying vec2 vR;
-  varying vec2 vT;
-  varying vec2 vB;
+  varying highp vec2 vUv;
+  varying highp vec2 vL;
+  varying highp vec2 vR;
+  varying highp vec2 vT;
+  varying highp vec2 vB;
   uniform sampler2D uVelocity;
   uniform sampler2D uCurl;
   uniform float curl;

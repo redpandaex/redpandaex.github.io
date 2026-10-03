@@ -13,6 +13,8 @@ import { useEffect, useId, useState } from "react";
 import { BlogCardGrid } from "@/components/blog-card";
 import { categories as knownCategories } from "@/lib/config";
 import type { PostSummary } from "@/lib/types";
+import { AmbientSurface } from "./ambient-surface";
+import { ManuscriptDesk, type ManuscriptSnippet } from "./manuscript-desk";
 
 export type LibraryView = "articles" | "categories" | "tags";
 const views = [
@@ -25,10 +27,12 @@ export function ArticleExplorer({
   posts,
   compact = false,
   initialView = "articles",
+  snippets,
 }: {
   posts: PostSummary[];
   compact?: boolean;
   initialView?: LibraryView;
+  snippets?: Record<string, ManuscriptSnippet>;
 }) {
   const inputId = useId();
   const [query, setQuery] = useState("");
@@ -170,7 +174,11 @@ export function ArticleExplorer({
         </div>
       )}
       {filtered.length ? (
-        <BlogCardGrid posts={filtered} />
+        compact ? (
+          <ManuscriptDesk posts={filtered} snippets={snippets} />
+        ) : (
+          <BlogCardGrid posts={filtered} />
+        )
       ) : (
         <div className="empty-state">
           <SlidersHorizontal size={32} />
@@ -283,7 +291,7 @@ export function ArticleExplorer({
           OF THINGS I LEARNED.
         </span>
       </aside>
-      <div className="library-content">
+      <AmbientSurface kind="grid" className="library-content">
         <div className="article-search">
           <Search size={17} />
           <label className="sr-only" htmlFor={inputId}>
@@ -301,7 +309,7 @@ export function ArticleExplorer({
           />
         </div>
         {results}
-      </div>
+      </AmbientSurface>
     </div>
   );
 }

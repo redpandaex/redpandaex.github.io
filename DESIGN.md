@@ -8,7 +8,15 @@ VISUAL_DENSITY: 4. Generous spacing around articles and restrained metadata.
 
 The visual language uses existing Tailwind v4, Radix components and GSAP. It is a custom aesthetic. The user explicitly chose bold multicolor: cobalt is the action color; coral, lavender and lime recur in illustrations and experiments. Light/dark surfaces use shared tokens. Geist and Geist Mono remain self-hosted through Next font.
 
-Latest layout: warm paper canvas, a fixed 128px book-spine directory on desktop and a bottom floating dock on mobile. The homepage is led by full-width typography, with the panda as a small sticker in the negative space. No top navigation bar. Writing, categories and tags are one content library; existing taxonomy URLs remain accessible, but primary navigation has four destinations: studio, writing, experiments and about.
+Latest layout: warm paper canvas, a fixed 128px book-spine directory on desktop and a bottom floating dock on mobile. The homepage is led by full-width typography, with the panda as a small sticker in the negative space. No top navigation bar. Writing, categories and tags are one content library; existing taxonomy URLs remain accessible, but primary navigation has three destinations: studio, writing and about.
+
+Effects are interactions, not exhibits. Gravity appears in magnetic CTA buttons and small satellites around the panda; elastic dots form the writing area's background. Fluid ink follows pointer movement in the hero's paper canvas, loads after the first interaction and sleeps when idle. Unsupported WebGL devices get a Canvas wash. All decoration uses pointer-events: none; native scrolling and content links remain usable. A shared motion preference stops effects and reveals the ordinary HTML heading when disabled. Old experiment URLs return to the homepage.
+
+The homepage article area is a manuscript desk: asymmetric tinted sheets, translucent tape, folded corners and attached code notes extracted from actual MDX articles. Hover lifts and straightens the paper; touch layouts stack the sheets without rotation. The unified writing library keeps its searchable list.
+
+The panda is the site's colorist. Clicking its image chooses one of four palettes; desktop swatches allow direct selection and a reset. The chosen palette is stored locally and updates action colors, paper surfaces, particle accents, orbit dots and both fluid renderers together. Dark mode uses matching readable accent tokens.
+
+Article links carry particle typography between routes. The homepage's latest-manuscript link samples Code. Create. when visible; article sheets, archive entries and related articles use the visible article heading as the origin. A temporary Three.js layer follows curved paths and gathers into the destination's actual, wrapped heading. Next navigation is not delayed; reduced motion, unavailable WebGL, interrupted navigation or scrolling restores ordinary HTML. Each flight disposes its resources and uses a fresh canvas context.
 
 Shape rule: panels use 24px corners, controls use pills, technical readouts use 8px corners. Native keyboard-accessible controls accompany decorative canvases with explicit pause buttons. Reduced motion disables automatic animation and pointer tilt. Animation frames stop outside the viewport or in hidden tabs.
 

@@ -1,8 +1,8 @@
 import * as THREE from "three";
+import { readInkColors } from "./studio-palettes";
 
 type MotionSettings = { paused: boolean; reducedMotion: boolean };
 const padding = 36;
-const accents = ["#3156e8", "#eb704c", "#9673df", "#abc849"];
 
 function sampleTitle(host: HTMLElement) {
   const bounds = host.getBoundingClientRect();
@@ -45,7 +45,7 @@ function sampleTitle(host: HTMLElement) {
   const bases: number[] = [];
   const accentColors: number[] = [];
   const seeds: number[] = [];
-  const palette = accents.map((color) => new THREE.Color(color));
+  const palette = readInkColors().map((color) => new THREE.Color(color));
   for (let y = padding; y < height - padding; y += step) {
     for (let x = padding; x < width - padding; x += step) {
       const offset = (Math.floor(y) * width + Math.floor(x)) * 4;

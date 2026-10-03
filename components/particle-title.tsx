@@ -4,6 +4,8 @@ import { Pause, Play, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { createTitleParticles } from "@/lib/title-particles";
 import { useTheme } from "./theme-provider";
+import { useMotion } from "./motion-provider";
+import { usePalette } from "./palette-provider";
 
 export function ParticleTitle() {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -13,14 +15,16 @@ export function ParticleTitle() {
   );
   const [ready, setReady] = useState(false);
   const [paused, setPaused] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const { active, reducedMotion } = useMotion();
+  const motionRef = useRef({ paused: !active, reducedMotion });
   const { resolvedTheme } = useTheme();
+  const { palette } = usePalette();
   useEffect(() => {
+    if (!active) {
+      setReady(false);
+      return;
+    }
     let alive = true;
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setReducedMotion(media.matches);
-    sync();
-    media.addEventListener("change", sync);
     Promise.all([import("@/lib/title-particles"), document.fonts.ready])
       .then(([module]) => {
         const host = hostRef.current;
@@ -30,6 +34,7 @@ export function ParticleTitle() {
           engineRef.current = module.createTitleParticles(canvas, host, () =>
             setReady(false),
           );
+          engineRef.current.setMotion(motionRef.current);
           setReady(true);
         } catch {
           setReady(false);
@@ -40,18 +45,18 @@ export function ParticleTitle() {
       });
     return () => {
       alive = false;
-      media.removeEventListener("change", sync);
       engineRef.current?.dispose();
       engineRef.current = null;
     };
-  }, []);
+  }, [active]);
   useEffect(() => {
-    engineRef.current?.setMotion({ paused, reducedMotion });
-  }, [paused, reducedMotion]);
+    motionRef.current = { paused: paused || !active, reducedMotion };
+    engineRef.current?.setMotion(motionRef.current);
+  }, [paused, reducedMotion, active]);
   // biome-ignore lint/correctness/useExhaustiveDependencies: Re-sample the heading's computed colors after a theme change.
   useEffect(() => {
     engineRef.current?.refresh();
-  }, [resolvedTheme]);
+  }, [resolvedTheme, palette.id]);
   return (
     <>
       <div ref={hostRef} className="particle-title">
@@ -60,6 +65,7 @@ export function ParticleTitle() {
           <span data-particle-line>Create.</span>
         </h1>
         <canvas
+          key={active ? "motion" : "still"}
           ref={canvasRef}
           className="particle-title-canvas"
           aria-hidden="true"
@@ -73,7 +79,7 @@ export function ParticleTitle() {
           <button
             type="button"
             aria-label="打散标题粒子"
-            disabled={!ready || paused || reducedMotion}
+            disabled={!ready || paused || !active}
             onClick={() => engineRef.current?.burst()}
           >
             <Sparkles size={14} />
@@ -81,13 +87,11 @@ export function ParticleTitle() {
           </button>
           <button
             type="button"
-            aria-label={
-              paused || reducedMotion ? "播放文字动画" : "暂停文字动画"
-            }
-            disabled={!ready || reducedMotion}
+            aria-label={paused || !active ? "播放文字动画" : "暂停文字动画"}
+            disabled={!ready || !active}
             onClick={() => setPaused((value) => !value)}
           >
-            {paused || reducedMotion ? <Play size={14} /> : <Pause size={14} />}
+            {paused || !active ? <Play size={14} /> : <Pause size={14} />}
           </button>
         </div>
       </div>

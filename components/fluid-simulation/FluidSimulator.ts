@@ -12,7 +12,6 @@ import {
 import {
   createPointer,
   findPointerById,
-  scaleByPixelRatio,
   updatePointerDownData,
   updatePointerMoveData,
   updatePointerUpData,
@@ -49,7 +48,6 @@ export class FluidSimulator {
   private blurProgram!: ShaderProgram;
   private clearProgram!: ShaderProgram;
   private colorProgram!: ShaderProgram;
-  private checkerboardProgram!: ShaderProgram;
   private bloomPrefilterProgram!: ShaderProgram;
   private bloomBlurProgram!: ShaderProgram;
   private bloomFinalProgram!: ShaderProgram;
@@ -86,6 +84,7 @@ export class FluidSimulator {
   private animationFrameId: number | null = null;
   private lastUpdateTime = Date.now();
   private colorUpdateTimer = 0;
+  private lastFrameTime = 0;
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -96,7 +95,7 @@ export class FluidSimulator {
 
     // 移动端优化
     if (isMobile()) {
-      this.config.DYE_RESOLUTION = 512;
+      this.config.DYE_RESOLUTION = Math.min(this.config.DYE_RESOLUTION, 512);
     }
 
     // 初始化 WebGL
@@ -109,20 +108,17 @@ export class FluidSimulator {
     this.supportLinearFiltering = !!context.ext.supportLinearFiltering;
 
     // 初始化
-    this.blit = initBlit(this.gl);
-    this.formats = getTextureFormats(
-      this.gl,
-      context.ext.halfFloatTexType,
-      this.supportLinearFiltering,
-    );
-    this.initPrograms();
-    this.initFramebuffers();
-
-    // 创建默认指针
-    this.pointers.push(createPointer());
-
-    // 初始随机飞溅
-    this.multipleSplats(Math.floor(Math.random() * 20) + 5);
+    try {
+      this.blit = initBlit(this.gl);
+      this.formats = getTextureFormats(context);
+      this.initPrograms();
+      this.initFramebuffers();
+      this.pointers.push(createPointer());
+      this.multipleSplats(this.config.INITIAL_SPLATS);
+    } catch (error) {
+      this.gl.getExtension("WEBGL_lose_context")?.loseContext();
+      throw error;
+    }
   }
 
   private initPrograms(): void {
@@ -143,11 +139,6 @@ export class FluidSimulator {
       gl,
       Shaders.baseVertexShaderSource,
       Shaders.colorShaderSource,
-    );
-    this.checkerboardProgram = createShaderProgram(
-      gl,
-      Shaders.baseVertexShaderSource,
-      Shaders.checkerboardShaderSource,
     );
     this.bloomPrefilterProgram = createShaderProgram(
       gl,
@@ -223,6 +214,7 @@ export class FluidSimulator {
   }
 
   private initFramebuffers(): void {
+    this.releaseFramebuffers();
     const gl = this.gl;
     const formats = this.formats;
 
@@ -376,6 +368,7 @@ export class FluidSimulator {
   public start(): void {
     if (this.animationFrameId !== null) return;
     this.lastUpdateTime = Date.now();
+    this.lastFrameTime = 0;
     this.updateKeywords();
     this.update();
   }
@@ -387,7 +380,15 @@ export class FluidSimulator {
     }
   }
 
-  private update = (): void => {
+  private update = (time = performance.now()): void => {
+    if (
+      this.lastFrameTime &&
+      time - this.lastFrameTime < (1000 / this.config.FRAME_RATE) * 0.9
+    ) {
+      this.animationFrameId = requestAnimationFrame(this.update);
+      return;
+    }
+    this.lastFrameTime = time;
     const dt = this.calcDeltaTime();
 
     if (this.resizeCanvas()) {
@@ -409,14 +410,18 @@ export class FluidSimulator {
   private calcDeltaTime(): number {
     const now = Date.now();
     let dt = (now - this.lastUpdateTime) / 1000;
-    dt = Math.min(dt, 0.016666);
+    dt = Math.min(dt, 0.033333);
     this.lastUpdateTime = now;
     return dt;
   }
 
   private resizeCanvas(): boolean {
-    const width = scaleByPixelRatio(this.canvas.clientWidth);
-    const height = scaleByPixelRatio(this.canvas.clientHeight);
+    const ratio = Math.min(
+      window.devicePixelRatio || 1,
+      this.config.MAX_PIXEL_RATIO,
+    );
+    const width = Math.max(1, Math.floor(this.canvas.clientWidth * ratio));
+    const height = Math.max(1, Math.floor(this.canvas.clientHeight * ratio));
 
     if (this.canvas.width !== width || this.canvas.height !== height) {
       this.canvas.width = width;
@@ -633,7 +638,9 @@ export class FluidSimulator {
     }
 
     if (target === null && this.config.TRANSPARENT) {
-      this.drawCheckerboard(target);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
     }
 
     this.drawDisplay(target);
@@ -648,16 +655,6 @@ export class FluidSimulator {
       color.g,
       color.b,
       1,
-    );
-    this.blit(target);
-  }
-
-  private drawCheckerboard(target: FBO | null): void {
-    const gl = this.gl;
-    this.checkerboardProgram.bind();
-    gl.uniform1f(
-      this.checkerboardProgram.uniforms.aspectRatio,
-      this.canvas.width / this.canvas.height,
     );
     this.blit(target);
   }
@@ -897,6 +894,11 @@ export class FluidSimulator {
     updatePointerUpData(pointer);
   }
 
+  public setPointerColor(id: number, color: RGBColor): void {
+    const pointer = findPointerById(this.pointers, id);
+    if (pointer) pointer.color = color;
+  }
+
   public setConfig(config: Partial<SimulationConfig>): void {
     Object.assign(this.config, config);
     this.updateKeywords();
@@ -908,8 +910,31 @@ export class FluidSimulator {
 
   public destroy(): void {
     this.stop();
+    this.releaseFramebuffers();
     // 清理 WebGL 资源
     const gl = this.gl;
     gl.getExtension("WEBGL_lose_context")?.loseContext();
+  }
+
+  private releaseFramebuffers(): void {
+    const targets = [
+      this.dye?.read,
+      this.dye?.write,
+      this.velocity?.read,
+      this.velocity?.write,
+      this.pressure?.read,
+      this.pressure?.write,
+      this.divergence,
+      this.curl,
+      this.bloom,
+      ...this.bloomFramebuffers,
+      this.sunrays,
+      this.sunraysTemp,
+    ];
+    for (const target of targets) {
+      if (!target) continue;
+      this.gl.deleteFramebuffer(target.fbo);
+      this.gl.deleteTexture(target.texture);
+    }
   }
 }

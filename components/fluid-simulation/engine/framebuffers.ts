@@ -2,7 +2,12 @@
  * WebGL 帧缓冲区管理
  */
 
-import type { DoubleFBO, FBO, TextureFormats } from "./types";
+import type {
+  DoubleFBO,
+  FBO,
+  TextureFormats,
+  WebGLContextResult,
+} from "./types";
 
 type GL = WebGLRenderingContext | WebGL2RenderingContext;
 
@@ -53,6 +58,13 @@ export function createFBO(
     texture,
     0,
   );
+  if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
+    gl.deleteFramebuffer(fbo);
+    gl.deleteTexture(texture);
+    throw new Error(
+      "This device cannot render the requested fluid texture format",
+    );
+  }
   gl.viewport(0, 0, width, height);
   gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -202,33 +214,18 @@ export function resizeDoubleFBO(
 }
 
 // 获取合适的纹理格式
-export function getTextureFormats(
-  gl: GL,
-  halfFloatTexType: number,
-  supportLinearFiltering: boolean,
-): TextureFormats {
-  const isWebGL2 =
-    "WebGL2RenderingContext" in window && gl instanceof WebGL2RenderingContext;
-
-  let rgba: { internalFormat: number; format: number };
-  let rg: { internalFormat: number; format: number };
-  let r: { internalFormat: number; format: number };
-
-  if (isWebGL2) {
-    const gl2 = gl as WebGL2RenderingContext;
-    rgba = { internalFormat: gl2.RGBA16F, format: gl2.RGBA };
-    rg = { internalFormat: gl2.RG16F, format: gl2.RG };
-    r = { internalFormat: gl2.R16F, format: gl2.RED };
-  } else {
-    rgba = { internalFormat: gl.RGBA, format: gl.RGBA };
-    rg = { internalFormat: gl.RGBA, format: gl.RGBA };
-    r = { internalFormat: gl.RGBA, format: gl.RGBA };
-  }
-
-  const filterType = supportLinearFiltering ? gl.LINEAR : gl.NEAREST;
-  const halfFloatType = halfFloatTexType;
-
-  return { rgba, rg, r, filterType, halfFloatType };
+export function getTextureFormats(context: WebGLContextResult): TextureFormats {
+  const { gl, ext } = context;
+  const { formatRGBA: rgba, formatRG: rg, formatR: r } = ext;
+  if (!rgba || !rg || !r)
+    throw new Error("Renderable floating-point textures are unavailable");
+  return {
+    rgba,
+    rg,
+    r,
+    filterType: ext.supportLinearFiltering ? gl.LINEAR : gl.NEAREST,
+    halfFloatType: ext.halfFloatTexType,
+  };
 }
 
 // 获取模拟分辨率

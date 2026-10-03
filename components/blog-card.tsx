@@ -1,5 +1,5 @@
 import { ArrowUpRight, Clock } from "lucide-react";
-import Link from "next/link";
+import { ArticleLink } from "./article-transition";
 import { AnimatedElement } from "@/components/animated-element";
 import type { PostSummary } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -16,8 +16,9 @@ export function BlogCard({
   const isMicro = post.slug.includes("qiankun");
   return (
     <AnimatedElement className={cn("post-card", className)} as="article">
-      <Link
+      <ArticleLink
         href={`/blog/${post.slug}/`}
+        title={post.title}
         className="post-cover-link"
         aria-label={`阅读：${post.title}`}
       >
@@ -35,7 +36,7 @@ export function BlogCard({
         <span className="post-cover-arrow">
           <ArrowUpRight size={22} />
         </span>
-      </Link>
+      </ArticleLink>
       <div className="post-meta">
         <span>
           {isMicro ? "架构 / 微前端" : post.tags.slice(0, 2).join(" / ")}
@@ -44,8 +45,10 @@ export function BlogCard({
           <span className="featured-label">精选</span>
         )}
       </div>
-      <h3>
-        <Link href={`/blog/${post.slug}/`}>{post.title}</Link>
+      <h3 data-article-link-title>
+        <ArticleLink href={`/blog/${post.slug}/`} title={post.title}>
+          {post.title}
+        </ArticleLink>
       </h3>
       <p className="post-excerpt">{post.excerpt}</p>
       <div className="post-bottom">

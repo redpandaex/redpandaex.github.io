@@ -129,7 +129,9 @@ export function BlogPostContent({
                 {category.name}
               </Link>
             )}
-            <h1 id={titleId}>{renderedPost.title}</h1>
+            <h1 id={titleId} data-article-title={renderedPost.slug}>
+              {renderedPost.title}
+            </h1>
             <p>{renderedPost.excerpt}</p>
             <div className="article-info">
               <span>{renderedPost.author}</span>

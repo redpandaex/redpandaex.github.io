@@ -121,6 +121,9 @@ export interface FluidConfig {
   SUNRAYS: boolean;
   SUNRAYS_RESOLUTION: number;
   SUNRAYS_WEIGHT: number;
+  INITIAL_SPLATS: number;
+  MAX_PIXEL_RATIO: number;
+  FRAME_RATE: number;
 }
 
 // Uniform 位置映射

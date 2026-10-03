@@ -1,6 +1,7 @@
 "use client";
 
 import { createElement, type JSX, useEffect, useRef } from "react";
+import { useMotion } from "./motion-provider";
 
 interface AnimatedElementProps {
   children: React.ReactNode;
@@ -23,13 +24,10 @@ export function AnimatedElement({
   as = "div",
 }: AnimatedElementProps) {
   const ref = useRef<HTMLElement>(null);
+  const { active } = useMotion();
   useEffect(() => {
     const element = ref.current;
-    if (
-      !element ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    )
-      return;
+    if (!element || !active) return;
     const effects: Animation[] = [];
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -64,6 +62,6 @@ export function AnimatedElement({
       observer.disconnect();
       effects.forEach((effect) => effect.cancel());
     };
-  }, [animation, delay]);
+  }, [animation, delay, active]);
   return createElement(as, { ref, className }, children);
 }
