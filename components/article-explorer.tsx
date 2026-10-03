@@ -15,6 +15,7 @@ import { categories as knownCategories } from "@/lib/config";
 import type { PostSummary } from "@/lib/types";
 import { AmbientSurface } from "./ambient-surface";
 import { ManuscriptDesk, type ManuscriptSnippet } from "./manuscript-desk";
+import { changeFilter, ContentSwap } from "./page-motion";
 
 export type LibraryView = "articles" | "categories" | "tags";
 const views = [
@@ -36,6 +37,7 @@ export function ArticleExplorer({
 }) {
   const inputId = useId();
   const [query, setQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [tag, setTag] = useState("");
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("recent");
@@ -51,6 +53,7 @@ export function ArticleExplorer({
       setTag(params.get("tag") || "");
       setCategory(params.get("category") || "");
       setQuery(params.get("q") || "");
+      setSearchQuery(params.get("q") || "");
       const nextView = params.get("view");
       if (
         nextView === "categories" ||
@@ -60,11 +63,13 @@ export function ArticleExplorer({
         setView(nextView);
       else if (params.has("tag")) setView("tags");
       else if (params.has("category")) setView("categories");
+      else setView(initialView);
     };
     restore();
-    window.addEventListener("popstate", restore);
-    return () => window.removeEventListener("popstate", restore);
-  }, [compact]);
+    const onPop = () => changeFilter(restore);
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [compact, initialView]);
   const syncLocation = (next: {
     tag?: string;
     category?: string;
@@ -94,18 +99,21 @@ export function ArticleExplorer({
   };
   const chooseTag = (value: string) => {
     const next = tag === value ? "" : value;
-    setTag(next);
+    changeFilter(() => setTag(next));
     syncLocation({ tag: next });
   };
   const chooseCategory = (value: string) => {
     const next = category === value ? "" : value;
-    setCategory(next);
+    changeFilter(() => setCategory(next));
     syncLocation({ category: next });
   };
   const reset = () => {
-    setQuery("");
-    setTag("");
-    setCategory("");
+    changeFilter(() => {
+      setQuery("");
+      setSearchQuery("");
+      setTag("");
+      setCategory("");
+    });
     syncLocation({ query: "", tag: "", category: "" });
   };
   const filtered = posts
@@ -115,7 +123,7 @@ export function ArticleExplorer({
         (!category || post.category === category) &&
         `${post.title} ${post.excerpt} ${post.tags.join(" ")}`
           .toLowerCase()
-          .includes(query.trim().toLowerCase()),
+          .includes(searchQuery.trim().toLowerCase()),
     )
     .toSorted((a, b) =>
       sort === "reading"
@@ -136,7 +144,9 @@ export function ArticleExplorer({
             <select
               aria-label="文章排序"
               value={sort}
-              onChange={(event) => setSort(event.target.value)}
+              onChange={(event) =>
+                changeFilter(() => setSort(event.target.value))
+              }
             >
               <option value="recent">最近更新</option>
               <option value="reading">短文优先</option>
@@ -144,13 +154,13 @@ export function ArticleExplorer({
           </label>
         </div>
       )}
-      {!compact && (tag || category || query) && (
+      {!compact && (tag || category || searchQuery) && (
         <div className="active-filters">
           {category && (
             <button
               type="button"
               onClick={() => {
-                setCategory("");
+                changeFilter(() => setCategory(""));
                 syncLocation({ category: "" });
               }}
             >
@@ -161,7 +171,7 @@ export function ArticleExplorer({
             <button
               type="button"
               onClick={() => {
-                setTag("");
+                changeFilter(() => setTag(""));
                 syncLocation({ tag: "" });
               }}
             >
@@ -175,9 +185,13 @@ export function ArticleExplorer({
       )}
       {filtered.length ? (
         compact ? (
-          <ManuscriptDesk posts={filtered} snippets={snippets} />
+          <ManuscriptDesk
+            posts={filtered}
+            snippets={snippets}
+            motionScope={inputId}
+          />
         ) : (
-          <BlogCardGrid posts={filtered} />
+          <BlogCardGrid posts={filtered} motionScope={inputId} />
         )
       ) : (
         <div className="empty-state">
@@ -202,7 +216,7 @@ export function ArticleExplorer({
                 key={value || "all"}
                 type="button"
                 aria-pressed={tag === value}
-                onClick={() => setTag(value)}
+                onClick={() => changeFilter(() => setTag(value))}
               >
                 {value || "全部"}
               </button>
@@ -226,7 +240,7 @@ export function ArticleExplorer({
               type="button"
               aria-pressed={view === item.value}
               onClick={() => {
-                setView(item.value);
+                changeFilter(() => setView(item.value));
                 syncLocation({ view: item.value });
               }}
             >
@@ -242,49 +256,51 @@ export function ArticleExplorer({
             </button>
           ))}
         </fieldset>
-        <div className="library-facets">
-          {view === "articles" && (
-            <>
-              <p>从一篇文章开始。</p>
-              <span>也可以切换分类或标签，找到你感兴趣的方向。</span>
-            </>
-          )}
-          {view === "categories" && (
-            <fieldset aria-label="文章分类筛选">
-              {categoryNames.map((slug) => (
-                <button
-                  type="button"
-                  key={slug}
-                  aria-pressed={category === slug}
-                  onClick={() => chooseCategory(slug)}
-                >
-                  <Folder size={15} />
-                  {categoryName(slug)}
-                  <small>
-                    {posts.filter((post) => post.category === slug).length}
-                  </small>
-                </button>
-              ))}
-            </fieldset>
-          )}
-          {view === "tags" && (
-            <fieldset className="library-tags" aria-label="文章标签筛选">
-              {tags.map((name) => (
-                <button
-                  type="button"
-                  key={name}
-                  aria-pressed={tag === name}
-                  onClick={() => chooseTag(name)}
-                >
-                  #{name}
-                  <small>
-                    {posts.filter((post) => post.tags.includes(name)).length}
-                  </small>
-                </button>
-              ))}
-            </fieldset>
-          )}
-        </div>
+        <ContentSwap name={`facets-${inputId}`} swapKey={view}>
+          <div className="library-facets">
+            {view === "articles" && (
+              <>
+                <p>从一篇文章开始。</p>
+                <span>也可以切换分类或标签，找到你感兴趣的方向。</span>
+              </>
+            )}
+            {view === "categories" && (
+              <fieldset aria-label="文章分类筛选">
+                {categoryNames.map((slug) => (
+                  <button
+                    type="button"
+                    key={slug}
+                    aria-pressed={category === slug}
+                    onClick={() => chooseCategory(slug)}
+                  >
+                    <Folder size={15} />
+                    {categoryName(slug)}
+                    <small>
+                      {posts.filter((post) => post.category === slug).length}
+                    </small>
+                  </button>
+                ))}
+              </fieldset>
+            )}
+            {view === "tags" && (
+              <fieldset className="library-tags" aria-label="文章标签筛选">
+                {tags.map((name) => (
+                  <button
+                    type="button"
+                    key={name}
+                    aria-pressed={tag === name}
+                    onClick={() => chooseTag(name)}
+                  >
+                    #{name}
+                    <small>
+                      {posts.filter((post) => post.tags.includes(name)).length}
+                    </small>
+                  </button>
+                ))}
+              </fieldset>
+            )}
+          </div>
+        </ContentSwap>
         <span className="library-index-note">
           A SMALL COLLECTION
           <br />
@@ -304,6 +320,7 @@ export function ArticleExplorer({
             value={query}
             onChange={(event) => {
               setQuery(event.target.value);
+              changeFilter(() => setSearchQuery(event.target.value));
               syncLocation({ query: event.target.value });
             }}
           />

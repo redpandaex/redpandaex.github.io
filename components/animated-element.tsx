@@ -15,6 +15,7 @@ interface AnimatedElementProps {
   delay?: number;
   className?: string;
   as?: keyof JSX.IntrinsicElements;
+  reveal?: boolean;
 }
 export function AnimatedElement({
   children,
@@ -22,12 +23,13 @@ export function AnimatedElement({
   delay = 0,
   className = "",
   as = "div",
+  reveal = true,
 }: AnimatedElementProps) {
   const ref = useRef<HTMLElement>(null);
   const { active } = useMotion();
   useEffect(() => {
     const element = ref.current;
-    if (!element || !active) return;
+    if (!element || !active || !reveal) return;
     const effects: Animation[] = [];
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -62,6 +64,6 @@ export function AnimatedElement({
       observer.disconnect();
       effects.forEach((effect) => effect.cancel());
     };
-  }, [animation, delay, active]);
+  }, [animation, delay, active, reveal]);
   return createElement(as, { ref, className }, children);
 }

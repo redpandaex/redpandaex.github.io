@@ -216,6 +216,7 @@ export const ArticleLink = forwardRef<HTMLAnchorElement, ArticleLinkProps>(
       <Link
         {...props}
         href={href}
+        transitionTypes={["particle-flight"]}
         ref={(element) => {
           linkRef.current = element;
           if (typeof forwardedRef === "function") forwardedRef(element);

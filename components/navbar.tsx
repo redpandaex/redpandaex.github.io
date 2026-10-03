@@ -10,7 +10,7 @@ import {
   User,
   X,
 } from "lucide-react";
-import Link from "next/link";
+import { PageLink as Link } from "./page-motion";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CommandPalette } from "@/components/command-palette";
@@ -58,9 +58,15 @@ export function Navbar({ posts }: { posts: PostSummary[] }) {
   return (
     <>
       <aside ref={rootRef} className="site-navigation">
-        <Link href="/" className="rail-brand" aria-label={siteConfig.name}>
+        <Link
+          href="/"
+          direction="back"
+          className="rail-brand"
+          aria-label={siteConfig.name}
+        >
           <span>
-            LXW<span>*</span>
+            {siteConfig.author.name}
+            <span>*</span>
           </span>
           <small>made of curiosity</small>
         </Link>
@@ -78,6 +84,7 @@ export function Navbar({ posts }: { posts: PostSummary[] }) {
               <Link
                 key={item.href}
                 href={item.href}
+                direction={item.href === "/" ? "back" : "forward"}
                 className="spine-link"
                 aria-current={active ? "page" : undefined}
                 onClick={() => setOpen(false)}
@@ -144,7 +151,7 @@ export function Navbar({ posts }: { posts: PostSummary[] }) {
           </button>
         </div>
         <span className="rail-caption" aria-hidden="true">
-          FRONTEND DEVELOPER · KEEP MAKING
+          SOFTWARE ENGINEER · KEEP MAKING
         </span>
       </aside>
       <CommandPalette posts={posts} />

@@ -3,19 +3,26 @@ import { ArticleLink } from "./article-transition";
 import { AnimatedElement } from "@/components/animated-element";
 import type { PostSummary } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { PaperMotion } from "./page-motion";
 
 export function BlogCard({
   post,
   featured = false,
   className,
+  reveal = true,
 }: {
   post: PostSummary;
   featured?: boolean;
   className?: string;
+  reveal?: boolean;
 }) {
   const isMicro = post.slug.includes("qiankun");
   return (
-    <AnimatedElement className={cn("post-card", className)} as="article">
+    <AnimatedElement
+      className={cn("post-card", className)}
+      as="article"
+      reveal={reveal}
+    >
       <ArticleLink
         href={`/blog/${post.slug}/`}
         title={post.title}
@@ -66,16 +73,24 @@ export function BlogCard({
 export function BlogCardGrid({
   posts,
   className,
+  motionScope,
 }: {
   posts: PostSummary[];
   featuredPosts?: PostSummary[];
   className?: string;
+  motionScope?: string;
 }) {
   return (
     <div className={cn("post-grid", className)}>
-      {posts.map((post) => (
-        <BlogCard key={post.slug} post={post} />
-      ))}
+      {posts.map((post) =>
+        motionScope ? (
+          <PaperMotion key={post.slug} name={`${motionScope}-${post.slug}`}>
+            <BlogCard post={post} reveal={false} />
+          </PaperMotion>
+        ) : (
+          <BlogCard key={post.slug} post={post} />
+        ),
+      )}
     </div>
   );
 }

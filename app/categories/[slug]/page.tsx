@@ -1,6 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { PageLink as Link, RouteSurface } from "@/components/page-motion";
 import { notFound } from "next/navigation";
 import { ArticleExplorer } from "@/components/article-explorer";
 import {
@@ -33,18 +33,20 @@ export default async function CategoryPage({
   const category = getCategoryBySlug(slug);
   if (!category) notFound();
   return (
-    <div className="site-container inner-page">
-      <Link href="/categories" className="back-link">
-        <ArrowLeft size={15} /> 返回分类
-      </Link>
-      <header className="page-heading">
-        <h1>
-          {category.name}
-          <span className="accent-text">.</span>
-        </h1>
-        <p>{category.description}</p>
-      </header>
-      <ArticleExplorer posts={getPostsByCategory(slug).map(summarizePost)} />
-    </div>
+    <RouteSurface routeKey={`category-${slug}`}>
+      <div className="site-container inner-page">
+        <Link href="/categories" direction="back" className="back-link">
+          <ArrowLeft size={15} /> 返回分类
+        </Link>
+        <header className="page-heading">
+          <h1>
+            {category.name}
+            <span className="accent-text">.</span>
+          </h1>
+          <p>{category.description}</p>
+        </header>
+        <ArticleExplorer posts={getPostsByCategory(slug).map(summarizePost)} />
+      </div>
+    </RouteSurface>
   );
 }

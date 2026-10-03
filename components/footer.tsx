@@ -1,5 +1,5 @@
 import { ArrowUpRight, GitFork, Mail } from "lucide-react";
-import Link from "next/link";
+import { PageLink as Link } from "./page-motion";
 import { siteConfig } from "@/lib/config";
 
 export function Footer() {
@@ -19,7 +19,10 @@ export function Footer() {
         </div>
       </div>
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} LXW · Made with curiosity.</span>
+        <span>
+          © {new Date().getFullYear()} {siteConfig.author.name} · Made with
+          curiosity.
+        </span>
         <div>
           <Link href="/about">关于</Link>
           <a href={siteConfig.social.github} target="_blank" rel="noreferrer">

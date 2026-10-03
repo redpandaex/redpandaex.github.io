@@ -51,7 +51,8 @@ export const metadata: Metadata = {
     "GSAP",
     "前端开发",
     "技术博客",
-    "LXW",
+    siteConfig.author.name,
+    siteConfig.author.role,
   ],
   authors: [
     {
@@ -81,7 +82,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    creator: "@lxw",
+    creator: `@${siteConfig.author.social.twitter?.split("/").filter(Boolean).at(-1) || "lxw_xw"}`,
     images: ["/images/redpanda-studio.webp"],
   },
   robots: {

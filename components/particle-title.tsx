@@ -1,6 +1,5 @@
 "use client";
 
-import { Pause, Play, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { createTitleParticles } from "@/lib/title-particles";
 import { useTheme } from "./theme-provider";
@@ -14,7 +13,6 @@ export function ParticleTitle() {
     null,
   );
   const [ready, setReady] = useState(false);
-  const [paused, setPaused] = useState(false);
   const { active, reducedMotion } = useMotion();
   const motionRef = useRef({ paused: !active, reducedMotion });
   const { resolvedTheme } = useTheme();
@@ -50,9 +48,9 @@ export function ParticleTitle() {
     };
   }, [active]);
   useEffect(() => {
-    motionRef.current = { paused: paused || !active, reducedMotion };
+    motionRef.current = { paused: !active, reducedMotion };
     engineRef.current?.setMotion(motionRef.current);
-  }, [paused, reducedMotion, active]);
+  }, [reducedMotion, active]);
   // biome-ignore lint/correctness/useExhaustiveDependencies: Re-sample the heading's computed colors after a theme change.
   useEffect(() => {
     engineRef.current?.refresh();
@@ -71,30 +69,9 @@ export function ParticleTitle() {
           aria-hidden="true"
         />
       </div>
-      <div className="particle-title-tools">
-        <span>
-          {ready ? "移动鼠标，拨开一点灵感。" : "一点代码，一点好奇心。"}
-        </span>
-        <div>
-          <button
-            type="button"
-            aria-label="打散标题粒子"
-            disabled={!ready || paused || !active}
-            onClick={() => engineRef.current?.burst()}
-          >
-            <Sparkles size={14} />
-            <span>打散一下</span>
-          </button>
-          <button
-            type="button"
-            aria-label={paused || !active ? "播放文字动画" : "暂停文字动画"}
-            disabled={!ready || !active}
-            onClick={() => setPaused((value) => !value)}
-          >
-            {paused || !active ? <Play size={14} /> : <Pause size={14} />}
-          </button>
-        </div>
-      </div>
+      <p className="particle-title-hint">
+        {ready ? "移动鼠标，拨开一点灵感。" : "一点代码，一点好奇心。"}
+      </p>
     </>
   );
 }
