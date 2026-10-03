@@ -1,6 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { PageLink as Link, RouteSurface } from "@/components/page-motion";
 import { notFound } from "next/navigation";
 import { ArticleExplorer } from "@/components/article-explorer";
 import { getAllTags, getPostsByTag } from "@/lib/mdx";
@@ -29,20 +29,22 @@ export default async function TagPage({
   const tag = getAllTags().find((tag) => tag.slug === decodeURIComponent(slug));
   if (!tag) notFound();
   return (
-    <div className="site-container inner-page">
-      <Link href="/tags" className="back-link">
-        <ArrowLeft size={15} /> 返回标签
-      </Link>
-      <header className="page-heading">
-        <h1>
-          <span className="accent-text">#</span>
-          {tag.name}
-        </h1>
-        <p>
-          关于 {tag.name} 的 {tag.count} 篇文章。
-        </p>
-      </header>
-      <ArticleExplorer posts={getPostsByTag(tag.name).map(summarizePost)} />
-    </div>
+    <RouteSurface routeKey={`tag-${slug}`}>
+      <div className="site-container inner-page">
+        <Link href="/tags" direction="back" className="back-link">
+          <ArrowLeft size={15} /> 返回标签
+        </Link>
+        <header className="page-heading">
+          <h1>
+            <span className="accent-text">#</span>
+            {tag.name}
+          </h1>
+          <p>
+            关于 {tag.name} 的 {tag.count} 篇文章。
+          </p>
+        </header>
+        <ArticleExplorer posts={getPostsByTag(tag.name).map(summarizePost)} />
+      </div>
+    </RouteSurface>
   );
 }

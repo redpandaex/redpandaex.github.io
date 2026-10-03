@@ -1,21 +1,24 @@
 import { ArrowUpRight, Clock } from "lucide-react";
 import type { PostSummary } from "@/lib/types";
 import { ArticleLink } from "./article-transition";
+import { PaperMotion } from "./page-motion";
 
 export type ManuscriptSnippet = { language: string; code: string };
 
 export function ManuscriptDesk({
   posts,
   snippets = {},
+  motionScope,
 }: {
   posts: PostSummary[];
   snippets?: Record<string, ManuscriptSnippet>;
+  motionScope?: string;
 }) {
   return (
     <div className="manuscript-desk">
       {posts.map((post, index) => {
         const snippet = snippets[post.slug];
-        return (
+        const manuscript = (
           <article
             key={post.slug}
             className={`manuscript manuscript-${index % 4}`}
@@ -62,6 +65,13 @@ export function ManuscriptDesk({
               <span className="manuscript-fold" aria-hidden="true" />
             </ArticleLink>
           </article>
+        );
+        return motionScope ? (
+          <PaperMotion key={post.slug} name={`${motionScope}-${post.slug}`}>
+            {manuscript}
+          </PaperMotion>
+        ) : (
+          manuscript
         );
       })}
     </div>

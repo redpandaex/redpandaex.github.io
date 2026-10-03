@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { siteConfig } from "@/lib/config";
 export function AboutContent({ renderedContent }: { renderedContent: string }) {
   return (
     <div className="site-container inner-page about-page">
@@ -7,17 +8,17 @@ export function AboutContent({ renderedContent }: { renderedContent: string }) {
           <h1>
             你好，
             <br />
-            <span className="accent-text">我是 LXW。</span>
+            <span className="accent-text">我是 {siteConfig.author.name}。</span>
           </h1>
           <p>
-            前端工程师，开源爱好者，也是一个始终保持好奇的人。
+            {siteConfig.author.role} / 好奇心常驻。
             <br />
-            喜欢把复杂问题拆开，把有趣的想法做出来。
+            {siteConfig.author.bio}
           </p>
         </div>
         <Image
           src="/images/redpanda-studio.webp"
-          alt="LXW 博客的小熊猫创意编程形象"
+          alt={`${siteConfig.author.name} 博客的小熊猫创意编程形象`}
           width={600}
           height={450}
           sizes="(max-width: 767px) 300px, 400px"

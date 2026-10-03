@@ -1,5 +1,5 @@
 import { ArrowUpRight, Braces } from "lucide-react";
-import Link from "next/link";
+import { PageLink as Link, RouteSurface } from "@/components/page-motion";
 import { AnimatedElement } from "@/components/animated-element";
 import { ArticleExplorer } from "@/components/article-explorer";
 import { AmbientSurface } from "@/components/ambient-surface";
@@ -21,7 +21,7 @@ export default function Home() {
       };
   }
   return (
-    <>
+    <RouteSurface routeKey="home">
       <Hero latestPost={posts[0]} />
       <section id="content">
         <AmbientSurface
@@ -58,6 +58,6 @@ export default function Home() {
           关于 <ArrowUpRight size={19} />
         </Link>
       </AnimatedElement>
-    </>
+    </RouteSurface>
   );
 }

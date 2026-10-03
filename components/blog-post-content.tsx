@@ -1,23 +1,34 @@
 "use client";
 
-import { ArrowLeft, Clock, Minus, Plus } from "lucide-react";
-import Link from "next/link";
+import {
+  ArrowLeft,
+  ArrowRight,
+  BookOpen,
+  Clock,
+  Minus,
+  Plus,
+} from "lucide-react";
+import { PageLink as Link } from "./page-motion";
 import { useEffect, useRef, useState } from "react";
 import { BlogCardGrid } from "@/components/blog-card";
 import { Comments } from "@/components/comments";
 import { trackEvent, trackPageView } from "@/components/google-analytics";
 import { ViewCounter } from "@/components/view-counter";
-import type { BlogPost, Category } from "@/lib/types";
+import type { BlogPost, Category, PostSummary } from "@/lib/types";
+import { ReadingContents, type ReadingHeading } from "./reading-contents";
 
-type Heading = { id: string; text: string; depth: string };
 export function BlogPostContent({
   renderedPost,
   category,
   relatedPosts,
+  previousPost,
+  nextPost,
 }: {
   renderedPost: BlogPost & { renderedContent: string };
   category: Category | null;
   relatedPosts: BlogPost[];
+  previousPost?: PostSummary;
+  nextPost?: PostSummary;
 }) {
   const leadingTitle = renderedPost.renderedContent.match(
     /^<h1 id="([^"]+)"[^>]*>[\s\S]*?<\/h1>\s*/,
@@ -29,7 +40,7 @@ export function BlogPostContent({
     ? renderedPost.renderedContent.slice(leadingTitle?.[0].length)
     : renderedPost.renderedContent;
   const article = useRef<HTMLElement>(null);
-  const [headings, setHeadings] = useState<Heading[]>([]);
+  const [headings, setHeadings] = useState<ReadingHeading[]>([]);
   const [activeHeading, setActiveHeading] = useState("");
   const [fontSize, setFontSize] = useState(1);
   useEffect(() => {
@@ -42,6 +53,7 @@ export function BlogPostContent({
     const headingElements = Array.from(
       element.querySelectorAll<HTMLHeadingElement>("h2[id], h3[id]"),
     );
+    setActiveHeading("");
     setHeadings(
       headingElements.map((heading) => ({
         id: heading.id,
@@ -117,13 +129,14 @@ export function BlogPostContent({
     <div className="site-container article-page">
       <div className="article-layout">
         <div className="article-main">
-          <Link href="/blog" className="back-link">
+          <Link href="/blog" direction="back" className="back-link">
             <ArrowLeft size={15} /> 返回博客
           </Link>
           <header className="article-header">
             {category && (
               <Link
                 href={`/blog/?category=${encodeURIComponent(category.slug)}&view=categories`}
+                direction="back"
                 className="article-category"
               >
                 {category.name}
@@ -148,6 +161,7 @@ export function BlogPostContent({
                 <Link
                   key={tag}
                   href={`/blog/?tag=${encodeURIComponent(tag)}&view=tags`}
+                  direction="back"
                 >
                   #{tag}
                 </Link>
@@ -160,6 +174,46 @@ export function BlogPostContent({
             // biome-ignore lint/security/noDangerouslySetInnerHtml: HTML is generated at build time from trusted local article files.
             dangerouslySetInnerHTML={{ __html: bodyContent }}
           />
+          <nav className="article-page-turns" aria-label="相邻文章">
+            {previousPost && (
+              <Link
+                href={`/blog/${previousPost.slug}/`}
+                transitionTypes={["page-previous"]}
+                className="page-turn-link page-turn-previous"
+              >
+                <span className="page-turn-caption">
+                  <ArrowLeft size={17} /> 上一篇
+                </span>
+                <strong>{previousPost.title}</strong>
+                <span className="page-turn-fold" aria-hidden="true" />
+              </Link>
+            )}
+            {nextPost && (
+              <Link
+                href={`/blog/${nextPost.slug}/`}
+                transitionTypes={["page-next"]}
+                className="page-turn-link page-turn-next"
+              >
+                <span className="page-turn-caption">
+                  下一篇 <ArrowRight size={17} />
+                </span>
+                <strong>{nextPost.title}</strong>
+                <span className="page-turn-fold" aria-hidden="true" />
+              </Link>
+            )}
+            {(!previousPost || !nextPost) && (
+              <Link
+                href="/blog"
+                direction="back"
+                className="page-turn-link page-turn-archive"
+              >
+                <span className="page-turn-caption">
+                  <BookOpen size={17} /> 回到文章库
+                </span>
+                <strong>还有一些思考，留在下一页。</strong>
+              </Link>
+            )}
+          </nav>
           <Comments slug={renderedPost.slug} />
           {relatedPosts.length > 0 && (
             <section className="related-section">
@@ -170,20 +224,7 @@ export function BlogPostContent({
         </div>
         <aside className="article-sidebar" aria-label="文章阅读工具">
           <p>这篇文章里</p>
-          <nav className="article-toc" aria-label="文章目录">
-            {headings.map((heading) => (
-              <a
-                key={heading.id}
-                href={`#${heading.id}`}
-                data-depth={heading.depth}
-                aria-current={
-                  activeHeading === heading.id ? "location" : undefined
-                }
-              >
-                {heading.text}
-              </a>
-            ))}
-          </nav>
+          <ReadingContents headings={headings} activeHeading={activeHeading} />
           <div className="reading-settings">
             <span>阅读字号</span>
             <div>

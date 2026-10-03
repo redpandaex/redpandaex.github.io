@@ -3,11 +3,16 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUp } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { useMotion } from "./motion-provider";
 
 export function ScrollProgress() {
   const bar = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);
+  const pathname = usePathname();
+  const { active } = useMotion();
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Route changes recreate scroll bounds for the new page.
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const trigger = ScrollTrigger.create({
@@ -19,8 +24,22 @@ export function ScrollProgress() {
         if (button.current) button.current.hidden = self.scroll() < 500;
       },
     });
-    return () => trigger.kill();
-  }, []);
+    let frame = 0;
+    const refresh = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => trigger.refresh());
+    };
+    // Article content and comments can change height after navigation.
+    const observer = new ResizeObserver(refresh);
+    const main = document.getElementById("main-content");
+    if (main) observer.observe(main);
+    refresh();
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      trigger.kill();
+    };
+  }, [pathname]);
   return (
     <>
       <div ref={bar} className="reading-progress" aria-hidden="true" />
@@ -33,10 +52,7 @@ export function ScrollProgress() {
         onClick={() =>
           window.scrollTo({
             top: 0,
-            behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
-              .matches
-              ? "instant"
-              : "smooth",
+            behavior: active ? "smooth" : "instant",
           })
         }
       >

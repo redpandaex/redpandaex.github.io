@@ -2,6 +2,7 @@
 
 import { gsap } from "gsap";
 import { useEffect, useRef, useState } from "react";
+import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 
 interface LoadingAnimationProps {
@@ -84,7 +85,9 @@ export function LoadingAnimation({
               <div className="w-full h-full rounded-full border-4 border-t-transparent border-primary"></div>
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-foreground">LXW的技术博客</h1>
+          <h1 className="text-2xl font-bold text-foreground">
+            {siteConfig.name}
+          </h1>
           <p className="text-muted-foreground">正在加载精彩内容...</p>
         </div>
 

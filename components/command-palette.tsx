@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUpRight, FileText, Search, X } from "lucide-react";
-import Link from "next/link";
+import { PageLink as Link } from "./page-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { PostSummary } from "@/lib/types";
@@ -79,7 +79,9 @@ export function CommandPalette({ posts }: { posts: PostSummary[] }) {
               const post = results[Math.max(active, 0)];
               if (post) {
                 dialog.current?.close();
-                router.push(`/blog/${post.slug}/`);
+                router.push(`/blog/${post.slug}/`, {
+                  transitionTypes: ["nav-forward"],
+                });
               }
             }
           }}

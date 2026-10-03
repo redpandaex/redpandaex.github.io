@@ -4,6 +4,7 @@ import { ParticleTitle } from "@/components/particle-title";
 import { AmbientSurface } from "@/components/ambient-surface";
 import { MagneticLink } from "@/components/magnetic-link";
 import type { PostSummary } from "@/lib/types";
+import { siteConfig } from "@/lib/config";
 
 export function Hero({
   latestPost,
@@ -24,8 +25,8 @@ export function Hero({
           </span>
         </div>
         <p className="studio-greeting">
-          Hello, I'm <strong>LXW.</strong>
-          <span>一个爱折腾的前端工程师。</span>
+          Hello, I'm <strong>{siteConfig.author.name}.</strong>
+          <span>一个爱折腾的{siteConfig.author.role}。</span>
         </p>
         <div className="studio-title-stage">
           <ParticleTitle />
@@ -36,9 +37,9 @@ export function Hero({
         </div>
         <div className="studio-bottomline">
           <p>
-            把灵感写成代码，
+            {siteConfig.author.bio}
             <br />
-            <span>把好奇心变成可以触碰的东西。</span>
+            <span>把灵感变成可以触碰的东西。</span>
           </p>
           <div className="studio-links">
             <MagneticLink
