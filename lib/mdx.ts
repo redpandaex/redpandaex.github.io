@@ -86,8 +86,8 @@ export function getAllPosts(): BlogPost[] {
     .map((slug) => getPostBySlug(slug))
     .filter((post): post is BlogPost => post !== null)
     .sort((a, b) => {
-      const aTime = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
-      const bTime = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+      const aTime = new Date(a.updatedAt || a.publishedAt).getTime();
+      const bTime = new Date(b.updatedAt || b.publishedAt).getTime();
       return bTime - aTime;
     });
 
@@ -233,8 +233,8 @@ export function getRecentlyUpdatedPosts(limit = 5): BlogPost[] {
   return getAllPosts()
     .filter((post) => post.updatedAt)
     .sort((a, b) => {
-      const aTime = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
-      const bTime = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+      const aTime = new Date(a.updatedAt || a.publishedAt).getTime();
+      const bTime = new Date(b.updatedAt || b.publishedAt).getTime();
       return bTime - aTime;
     })
     .slice(0, limit);

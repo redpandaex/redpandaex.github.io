@@ -14,6 +14,8 @@ export interface BlogPost {
   slug: string;
 }
 
+export type PostSummary = Omit<BlogPost, "content" | "coverImage">;
+
 export interface Author {
   id: string;
   name: string;

@@ -374,6 +374,8 @@ export class FluidSimulator {
   }
 
   public start(): void {
+    if (this.animationFrameId !== null) return;
+    this.lastUpdateTime = Date.now();
     this.updateKeywords();
     this.update();
   }
