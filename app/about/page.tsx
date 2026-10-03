@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { AboutContent } from "@/components/about-content";
 import { AboutPageSkeleton } from "@/components/about-page-skeleton";
-import { BlogPostWrapper } from "@/components/blog-post-wrapper";
 import { getRenderedAbout } from "@/lib/mdx-render";
 
 export const metadata: Metadata = {
@@ -18,9 +17,7 @@ async function AboutPageContent() {
 export default function AboutPage() {
   return (
     <Suspense fallback={<AboutPageSkeleton />}>
-      <BlogPostWrapper loadingDelay={300}>
-        <AboutPageContent />
-      </BlogPostWrapper>
+      <AboutPageContent />
     </Suspense>
   );
 }

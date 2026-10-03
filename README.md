@@ -1,239 +1,99 @@
-# 李小伟的技术博客
+# LXW 的技术博客
 
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Flixiaowei11111.github.io&up_message=online&down_message=offline&style=for-the-badge&logo=vercel)](https://redpandaex.github.io)
+[访问博客](https://redpandaex.github.io) · [GitHub](https://github.com/redpandaex/redpandaex.github.io)
 
-🌐 **在线访问**: [https://redpandaex.github.io](https://redpandaex.github.io)
+一个有点艺术感的前端工程师博客：分享技术思考，也展示可以动手玩的创意编程实验。使用 Next.js 静态导出，适用于 GitHub Pages。
 
-![Next.js](https://img.shields.io/badge/Next.js-15.5.2-black)
-![React](https://img.shields.io/badge/React-19.1.0-blue)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-38B2AC)
-![License](https://img.shields.io/badge/License-MIT-green)
+## 技术栈
 
-一个基于 Next.js 15 和 React 19 构建的现代化技术博客，专注于前端技术分享和现代 Web 开发技术栈。
+- Next.js 16.3.8 / React 19.3.0 / TypeScript 7.0.2
+- Tailwind CSS 4.3.3 / Radix UI / Lucide 1.50
+- Three.js 0.186.1 / GSAP 3.15 / Canvas 2D / WebGL
+- MDX 内容文件 / Remark & Rehype / highlight.js
+- Biome 2.5.15 / Playwright 1.63
 
-## ✨ 特性
+## 本地运行
 
-- 🚀 **现代技术栈**: 基于 Next.js 15 + React 19 + TypeScript
-- 🎨 **精美设计**: 使用 TailwindCSS 4 打造现代化 UI
-- 📝 **MDX 支持**: 强大的 MDX 内容管理，支持 React 组件
-- 🌟 **动画效果**: 集成 GSAP 和自定义动画效果
-- 📱 **响应式设计**: 完美适配各种设备屏幕
-- ⚡ **性能优化**: 静态生成，快速加载
-- 🔍 **SEO 友好**: 完整的 SEO 优化和 OpenGraph 支持
-- 🎯 **分类标签**: 完善的博客分类和标签系统
-- 🎊 **交互特效**: 丰富的页面交互和视觉特效
-
-## 🛠️ 技术栈
-
-### 核心框架
-- **Next.js 15** - React 全栈框架
-- **React 19** - 用户界面库
-- **TypeScript** - 类型安全的 JavaScript
-
-### 样式和 UI
-- **TailwindCSS 4** - 原子化 CSS 框架
-- **Radix UI** - 无障碍 UI 组件库
-- **Lucide React** - 现代图标库
-- **GSAP** - 高性能动画库
-
-### 内容管理
-- **MDX** - Markdown + React 组件
-- **Gray Matter** - Frontmatter 解析
-- **Remark & Rehype** - Markdown 处理器
-- **Reading Time** - 阅读时间估算
-
-### 开发工具
-- **Biome** - 快速的代码格式化和检查工具
-- **PNPM** - 高效的包管理器
-- **TypeScript** - 静态类型检查
-
-## 🚀 快速开始
-
-### 环境要求
-
-- Node.js 18+ 
-- PNPM (推荐) 或 npm/yarn
-
-### 安装依赖
+使用 Node.js 24，pnpm 版本由 package.json 的 packageManager 固定。
 
 ```bash
-# 克隆项目
-git clone https://github.com/redpandaex/redpandaex.github.io.git
-cd redpandaex.github.io
-
-# 安装依赖
-pnpm install
-```
-
-### 开发环境
-
-```bash
-# 启动开发服务器
+pnpm install --frozen-lockfile
 pnpm dev
-
-# 访问 http://localhost:9966
 ```
 
-### 构建部署
+打开 http://localhost:9966。
+
+## 构建与检查
 
 ```bash
-# 构建项目
+pnpm lint
+pnpm typecheck
 pnpm build
-
-# 预览构建结果
 pnpm preview
 ```
 
-## 📁 项目结构
+构建结果位于 out/。dev 和 build 显式使用 Webpack，兼容现有 MDX JavaScript 插件。Next.js 16 默认使用 Turbopack，迁移依据：[官方升级文档](https://nextjs.org/docs/app/guides/upgrading/version-16)。
 
-```
-├── app/                    # Next.js App Router 页面
-│   ├── blog/              # 博客相关页面
-│   ├── categories/        # 分类页面
-│   ├── tags/              # 标签页面
-│   ├── about/             # 关于页面
-│   └── projects/          # 项目展示页面
-│
-├── components/            # React 组件
-│   ├── ui/               # UI 组件库
-│   ├── blog-card.tsx     # 博客卡片组件
-│   ├── navbar.tsx        # 导航栏组件
-│   ├── footer.tsx        # 页脚组件
-│   └── ...               # 其他组件
-├── content/              # 内容文件
-│   ├── posts/            # 博客文章 (MDX)
-│   ├── pages/            # 页面内容 (MDX)
-│   └── data/             # 数据文件
-├── lib/                  # 工具库
-│   ├── config.ts         # 站点配置
-│   ├── mdx.ts           # MDX 处理
-│   ├── posts.ts         # 文章处理
-│   └── utils.ts         # 工具函数
-├── public/               # 静态资源
-└── types/                # TypeScript 类型定义
-```
+## 交互
 
-## 📝 内容管理
+- 首页 Code. Create. 标题由细密粒子组成；指针拨动、点击打散、弹性归位与滚动解构直接融入标题，支持暂停。
+- 桌面使用书脊式侧边目录，手机使用底部浮动导航；搜索、主题与 GitHub 位于快捷工具中。
+- 首页小熊猫以贴纸形式出现，保留倾斜、换色与重置。
+- 全站搜索支持 Ctrl/Cmd + K、方向键、Enter、Escape；原生 dialog 管理焦点。
+- 文章、分类、标签统一在 /blog/ 文章库内浏览；分类、标签、关键词可组合筛选，筛选 URL 可分享。
+- 文章页提供目录导航、字号调节、代码复制。
+- 项目页包含粒子引力与弹性网格，可调强度、暂停、重置。
+- /test-fluid/ 保留 WebGL 流体模拟，点击开始后才运行。
+- 深浅色主题同步评论，偏好保存在浏览器。
+- 系统减少动态效果时，自动动画关闭；Canvas 离开视口或标签页隐藏后停止连续绘制。
+- 保留现有文章和分类/标签详情 URL；旧分类、标签首页也使用统一文章库。
 
-### 添加新文章
+## 浏览器验收
 
-1. 在 `content/posts/` 目录下创建新的 `.mdx` 文件
-2. 添加 frontmatter 元数据：
-
-```mdx
----
-title: "文章标题"
-description: "文章描述"
-date: "2024-01-01"
-tags: ["React", "Next.js"]
-category: "frontend"
----
-
-# 文章内容
-
-这里是文章正文...
-```
-
-### 支持的 Frontmatter 字段
-
-- `title`: 文章标题
-- `description`: 文章描述
-- `date`: 发布日期
-- `tags`: 标签数组
-- `category`: 分类
-- `featured`: 是否为精选文章
-- `draft`: 是否为草稿
-
-## 🎨 自定义配置
-
-在 `lib/config.ts` 中可以配置：
-
-- 站点基本信息
-- 作者信息
-- 社交链接
-- 导航菜单
-- 分类设置
-
-## 🌟 特效演示
-
-项目包含多种精美的交互特效：
-
-- 粒子背景动画
-- 磁性按钮效果
-- 页面滚动进度
-- 点击特效
-- 加载动画
-- 文本动画效果
-
-
-## 📊 性能优化
-
-- ⚡ 静态生成 (SSG)
-- 🖼️ 图片优化
-- 📦 代码分割
-- 🗜️ 资源压缩
-- 🚀 预加载关键资源
-
-## 🔧 开发脚本
+安装 Google Chrome 后运行：
 
 ```bash
-# 开发环境
-pnpm dev
-
-# 构建项目
 pnpm build
-
-# 启动生产服务器
-pnpm start
-
-# 代码检查
-pnpm lint
-
-# 代码格式化
-pnpm format
+pnpm test:e2e
 ```
 
-## 📱 部署
+测试使用本机 Chrome，覆盖桌面与手机的真实交互、布局、主题、代码复制和动态效果偏好。测试会在 9977 端口启动独立的静态预览，不占用日常开发的 9966 端口。报告位于 playwright-report/；失败保留 trace。
 
-### GitHub Pages
+最新的书脊导航、统一文章库与首页文字粒子改动按用户要求交由手动验收，未重新运行测试；现有测试中的旧导航、标题和标签入口断言需要随最终确认的交互更新。
 
-项目已配置为自动部署到 GitHub Pages。推送到主分支时会自动触发部署。
+## 内容管理
 
-### 其他平台
+文章放在 content/posts/ 下，支持 .md 和 .mdx。首页、列表、标签、分类、搜索和详情统一读取这些文件。
 
-- **Vercel**: 一键部署
-- **Netlify**: 支持自动部署
-- **自托管**: 使用 `pnpm build` 构建后部署 `out` 目录
-
-## 🤝 贡献
-
-欢迎提交 Issue 和 Pull Request！
-
-1. Fork 项目
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 提交 Pull Request
-
-## 📄 许可证
-
-本项目基于 MIT 许可证开源 - 查看 [LICENSE](LICENSE) 文件了解详情。
-
-## 👨‍💻 作者
-
-**LXW**
-
-- GitHub: [@redpandaex](https://github.com/redpandaex)
-- 网站: [https://redpandaex.github.io](https://redpandaex.github.io)
-
-## 🙏 致谢
-
-- [Next.js](https://nextjs.org/) - 强大的 React 框架
-- [TailwindCSS](https://tailwindcss.com/) - 实用的 CSS 框架
-- [Radix UI](https://www.radix-ui.com/) - 高质量的 UI 组件
-- [GSAP](https://greensock.com/gsap/) - 专业的动画库
-
+```md
+---
+title: "文章标题"
+excerpt: "一句话摘要"
+author: "LXW"
+publishedAt: "2026-10-03"
+updatedAt: "2026-10-03"
+tags: ["React", "Next.js"]
+category: "frontend"
+featured: true
 ---
 
-⭐ 如果这个项目对你有帮助，请给个 Star 支持一下！
+# 文章标题
+
+这里是文章正文。
+```
+
+category 应与 content/data/categories.json 中的 slug 对应。关于页在 content/pages/about.mdx，站点和社交配置在 lib/config.ts。
+
+内容正文通过 Markdown 处理器生成 HTML，未执行正文中的 React 组件。next.config.ts 的 MDX 插件也支持将 MDX 直接作为页面导入。
+
+## 部署
+
+现有 GitHub Actions 在 main 分支有新提交时构建并发布 GitHub Pages。构建前执行类型与代码检查，安装使用 frozen lockfile。将 out/ 上传到其他静态托管平台也可使用。
+
+## 设计
+
+视觉方向、交互约束与审计记录在 [DESIGN.md](./DESIGN.md)。主视觉为生成的小熊猫插画，WebP 资源约 100 KB，通过 Next/font 加载字体。
+
+## 许可证
+
+[MIT](./LICENSE)。

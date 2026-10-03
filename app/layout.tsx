@@ -3,9 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Footer } from "@/components/footer";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { Navbar } from "@/components/navbar";
-import { ParticleBackground } from "@/components/particle-background";
+import { ScrollProgress } from "@/components/scroll-progress";
 import { ThemeProvider } from "@/components/theme-provider";
 import { siteConfig } from "@/lib/config";
+import { getAllPosts } from "@/lib/mdx";
+import { summarizePost } from "@/lib/utils";
 import "./globals.css";
 // 导入highlight.js样式 - 选择一个主题，比如github-dark
 import "highlight.js/styles/github-dark.css";
@@ -37,6 +39,7 @@ export const metadata: Metadata = {
     },
   },
   description: siteConfig.description,
+  icons: { icon: "/favicon.svg" },
   keywords: [
     "Next.js",
     "React",
@@ -62,12 +65,21 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     siteName: siteConfig.name,
+    images: [
+      {
+        url: "/images/redpanda-studio.webp",
+        width: 1400,
+        height: 1050,
+        alt: "RedPanda 创意编程博客",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
     creator: "@lxw",
+    images: ["/images/redpanda-studio.webp"],
   },
   robots: {
     index: true,
@@ -97,7 +109,7 @@ export default function RootLayout({
           geistMono.variable,
         )}
       >
-        <ThemeProvider defaultTheme="system" storageKey="ui-theme">
+        <ThemeProvider defaultTheme="light" storageKey="ui-theme">
           {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
             <GoogleAnalytics
               measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
@@ -106,9 +118,9 @@ export default function RootLayout({
           <a href="#main-content" className="skip-link">
             跳转到主要内容
           </a>
-          <ParticleBackground />
-          <div className="relative z-10 flex min-h-screen flex-col">
-            <Navbar />
+          <ScrollProgress />
+          <Navbar posts={getAllPosts().map(summarizePost)} />
+          <div className="site-shell relative z-10 flex min-h-screen flex-col">
             <main id="main-content" className="flex-1" tabIndex={-1}>
               {children}
             </main>

@@ -1,37 +1,33 @@
-import { ClickEffects } from "@/components/click-effects";
-import { ParticleBackground } from "@/components/particle-background";
-import { ScrollProgress } from "@/components/scroll-progress";
-import { Card } from "@/components/ui/card";
-
-interface AboutContentProps {
-  renderedContent: string;
-}
-
-export function AboutContent({ renderedContent }: AboutContentProps) {
+import Image from "next/image";
+export function AboutContent({ renderedContent }: { renderedContent: string }) {
   return (
-    <div className="min-h-screen relative">
-      {/* 背景特效 */}
-      <ParticleBackground />
-
-      {/* 滚动进度 */}
-      <ScrollProgress />
-
-      {/* 点击效果 */}
-      <ClickEffects />
-
-      <div className="pt-24 relative z-10">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <Card className="p-8 md:p-12 border-2">
-            <div
-              className="prose prose-lg max-w-none dark:prose-invert prose-headings:scroll-m-20 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-blockquote:border-primary prose-pre:bg-muted prose-pre:text-foreground prose-code:text-foreground"
-              // biome-ignore lint/security/noDangerouslySetInnerHtml: MDX content is pre-processed and safe
-              dangerouslySetInnerHTML={{
-                __html: renderedContent,
-              }}
-            />
-          </Card>
+    <div className="site-container inner-page about-page">
+      <header className="about-banner">
+        <div>
+          <h1>
+            你好，
+            <br />
+            <span className="accent-text">我是 LXW。</span>
+          </h1>
+          <p>
+            前端工程师，开源爱好者，也是一个始终保持好奇的人。
+            <br />
+            喜欢把复杂问题拆开，把有趣的想法做出来。
+          </p>
         </div>
-      </div>
+        <Image
+          src="/images/redpanda-studio.webp"
+          alt="LXW 博客的小熊猫创意编程形象"
+          width={600}
+          height={450}
+          sizes="(max-width: 767px) 300px, 400px"
+        />
+      </header>
+      <article
+        className="prose max-w-none article-prose about-body"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: HTML is generated from the trusted local about page.
+        dangerouslySetInnerHTML={{ __html: renderedContent }}
+      />
     </div>
   );
 }

@@ -108,6 +108,7 @@ export function createShaderProgram(
     program,
     uniforms,
     bind() {
+      // biome-ignore lint/correctness/useHookAtTopLevel: This is the WebGL API, not a React hook.
       gl.useProgram(this.program);
     },
   };
@@ -155,7 +156,8 @@ export function createMaterial(
 
     bind() {
       if (this.activeProgram) {
-        gl["useProgram"](this.activeProgram);
+        // biome-ignore lint/correctness/useHookAtTopLevel: This is the WebGL API, not a React hook.
+        gl.useProgram(this.activeProgram);
       }
     },
   };

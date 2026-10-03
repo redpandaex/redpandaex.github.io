@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { BlogPostContent } from "@/components/blog-post-content";
 import { BlogPostSkeleton } from "@/components/blog-post-skeleton";
-import { BlogPostWrapper } from "@/components/blog-post-wrapper";
 import {
   getCategoryBySlug,
   getPostBySlug,
@@ -74,9 +73,7 @@ export default async function BlogPostPage({
 
   return (
     <Suspense fallback={<BlogPostSkeleton />}>
-      <BlogPostWrapper loadingDelay={300}>
-        <BlogPostPageContent slug={slug} />
-      </BlogPostWrapper>
+      <BlogPostPageContent slug={slug} />
     </Suspense>
   );
 }

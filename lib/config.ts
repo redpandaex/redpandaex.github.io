@@ -23,24 +23,16 @@ export const siteConfig: SiteConfig = {
       href: "/",
     },
     {
-      label: "博客",
+      label: "文章",
       href: "/blog",
     },
     {
-      label: "分类",
-      href: "/categories",
-    },
-    {
-      label: "标签",
-      href: "/tags",
+      label: "实验",
+      href: "/projects",
     },
     {
       label: "关于",
       href: "/about",
-    },
-    {
-      label: "项目",
-      href: "/projects",
     },
   ],
   social: {
