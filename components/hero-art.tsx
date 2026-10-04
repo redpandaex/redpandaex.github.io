@@ -4,9 +4,9 @@ import { gsap } from "gsap";
 import { Palette, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { studioPalettes } from "@/lib/studio-palettes";
 import { useMotion } from "./motion-provider";
 import { usePalette } from "./palette-provider";
-import { studioPalettes } from "@/lib/studio-palettes";
 
 export function HeroArt() {
   const artwork = useRef<HTMLButtonElement>(null);

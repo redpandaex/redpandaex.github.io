@@ -102,6 +102,7 @@ export function AmbientSurface({
         ref={canvasRef}
         className="ambient-layer"
         aria-hidden="true"
+        tabIndex={-1}
       />
       {kind === "ink" && (
         <canvas
@@ -109,6 +110,7 @@ export function AmbientSurface({
           ref={fallbackRef}
           className="ambient-layer ambient-fallback"
           aria-hidden="true"
+          tabIndex={-1}
         />
       )}
       {children}

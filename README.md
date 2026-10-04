@@ -98,6 +98,8 @@ category 应与 content/data/categories.json 中的 slug 对应。关于页在 c
 
 现有 GitHub Actions 在 main 分支有新提交时构建并发布 GitHub Pages。构建前执行类型与代码检查，安装使用 frozen lockfile。将 out/ 上传到其他静态托管平台也可使用。
 
+构建和部署固定使用 ubuntu-24.04，Node 版本读取 .node-version，Actions 使用 Node 24 运行时的版本。静态导出和 MDX 插件统一由 next.config.ts 配置，Pages 设置步骤不再自动生成第二份 Next.js 配置。
+
 ## 设计
 
 视觉方向、交互约束与审计记录在 [DESIGN.md](./DESIGN.md)。主视觉为生成的小熊猫插画，WebP 资源约 100 KB，通过 Next/font 加载字体。

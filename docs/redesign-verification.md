@@ -1,6 +1,16 @@
 # 依赖升级与博客改造验收
 
-日期：2026-10-03。分支：feat/blog-creative-redesign。
+更新：2026-10-04。分支：feat/blog-creative-redesign。
+
+## CI 修复（2026-10-04）
+
+部署工作流 [37122295582](https://github.com/redpandaex/redpandaex.github.io/actions/runs/37122295582) 的类型检查已通过，失败来自 Biome 检查。修复 import 排序、装饰 Canvas 的 tabIndex、目录书签的依赖使用、被识别为 Hook 的流体回退函数名和遮蔽全局 escape 的事件处理器名；调整减少动态效果的 CSS 优先级，并保留粒子转场确实需要的局部覆盖。
+
+Pages 设置步骤此前未识别 next.config.ts，生成了额外的 next.config.js，产生格式错误并可能覆盖原有 MDX 配置。移除 static_site_generator 自动注入，继续使用仓库维护的静态导出配置。
+
+Actions 升级为 checkout v7、pnpm/action-setup v6、setup-node v7、configure-pages v6、cache v5、upload-pages-artifact v5、deploy-pages v5；构建和部署固定 ubuntu-24.04，项目 Node 24 从 .node-version 读取。
+
+本轮本地 pnpm typecheck、pnpm lint（无诊断）、pnpm build 均通过，生成 27 个静态页面。未执行浏览器或 E2E 验收；线上运行需在修复合入 main 后确认。下方保留此前各阶段记录。
 
 ## 最新修订：待用户手动验收
 

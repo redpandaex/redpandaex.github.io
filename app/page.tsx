@@ -1,12 +1,12 @@
 import { ArrowUpRight, Braces } from "lucide-react";
-import { PageLink as Link, RouteSurface } from "@/components/page-motion";
+import { AmbientSurface } from "@/components/ambient-surface";
 import { AnimatedElement } from "@/components/animated-element";
 import { ArticleExplorer } from "@/components/article-explorer";
-import { AmbientSurface } from "@/components/ambient-surface";
 import { Hero } from "@/components/hero";
+import type { ManuscriptSnippet } from "@/components/manuscript-desk";
+import { PageLink as Link, RouteSurface } from "@/components/page-motion";
 import { getAllPosts } from "@/lib/mdx";
 import { summarizePost } from "@/lib/utils";
-import type { ManuscriptSnippet } from "@/components/manuscript-desk";
 
 export default function Home() {
   const originals = getAllPosts().slice(0, 6);

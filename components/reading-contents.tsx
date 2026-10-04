@@ -21,6 +21,10 @@ export function ReadingContents({
     if (!nav || !marker) return;
     let animation: Animation | null = null;
     const place = () => {
+      if (!headings.some((heading) => heading.id === activeHeading)) {
+        marker.hidden = true;
+        return;
+      }
       const link = nav.querySelector<HTMLElement>('a[aria-current="location"]');
       if (!link || !nav.getBoundingClientRect().width) {
         marker.hidden = true;
