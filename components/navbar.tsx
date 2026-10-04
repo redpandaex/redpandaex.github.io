@@ -10,7 +10,6 @@ import {
   User,
   X,
 } from "lucide-react";
-import { PageLink as Link } from "./page-motion";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CommandPalette } from "@/components/command-palette";
@@ -18,6 +17,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { siteConfig } from "@/lib/config";
 import type { PostSummary } from "@/lib/types";
 import { useMotion } from "./motion-provider";
+import { PageLink as Link } from "./page-motion";
 
 const icons = [Braces, BookOpen, User];
 const captions = ["STUDIO", "WRITING", "ABOUT"];

@@ -3298,6 +3298,7 @@ html[data-motion="off"] .tag-tile:hover {
   opacity: 1;
 }
 [data-flight-hidden="true"] {
+  /* biome-ignore lint/complexity/noImportantStyles: Flight text must override particle readiness selectors and inline reveal styles. */
   opacity: 0 !important;
 }
 
@@ -3642,7 +3643,7 @@ html[data-motion="on"] .error-manuscript:hover::after {
   font-size: 13px;
 }
 html[data-motion="off"] {
-  scroll-behavior: auto !important;
+  scroll-behavior: auto;
 }
 html[data-motion="off"] .article-prose :is(h2, h3):target {
   animation: none;
@@ -3650,13 +3651,13 @@ html[data-motion="off"] .article-prose :is(h2, h3):target {
 :root[data-motion="off"]::view-transition-old(*),
 :root[data-motion="off"]::view-transition-new(*),
 :root[data-motion="off"]::view-transition-group(*) {
-  animation: none !important;
+  animation: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(*),
-  ::view-transition-new(*),
-  ::view-transition-group(*) {
-    animation: none !important;
+  :root::view-transition-old(*),
+  :root::view-transition-new(*),
+  :root::view-transition-group(*) {
+    animation: none;
   }
 }
 @media (max-width: 700px) {

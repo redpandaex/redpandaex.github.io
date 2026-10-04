@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { ComponentProps } from "react";
 import {
   createContext,
   forwardRef,
@@ -9,9 +10,8 @@ import {
   useEffect,
   useRef,
 } from "react";
-import type { ComponentProps } from "react";
-import { captureTextCloud } from "@/lib/text-cloud";
 import type { createArticleParticles } from "@/lib/article-particles";
+import { captureTextCloud } from "@/lib/text-cloud";
 import { useMotion } from "./motion-provider";
 
 const TransitionContext = createContext<{

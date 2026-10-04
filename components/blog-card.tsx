@@ -1,8 +1,8 @@
 import { ArrowUpRight, Clock } from "lucide-react";
-import { ArticleLink } from "./article-transition";
 import { AnimatedElement } from "@/components/animated-element";
 import type { PostSummary } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { ArticleLink } from "./article-transition";
 import { PaperMotion } from "./page-motion";
 
 export function BlogCard({

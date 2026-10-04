@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { addTransitionType, startTransition, ViewTransition } from "react";
 import type { ComponentProps, ReactNode } from "react";
+import { addTransitionType, startTransition, ViewTransition } from "react";
 import { useMotion } from "./motion-provider";
 
 const pageClasses = {

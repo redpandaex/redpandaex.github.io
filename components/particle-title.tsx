@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { createTitleParticles } from "@/lib/title-particles";
-import { useTheme } from "./theme-provider";
 import { useMotion } from "./motion-provider";
 import { usePalette } from "./palette-provider";
+import { useTheme } from "./theme-provider";
 
 export function ParticleTitle() {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -67,6 +67,7 @@ export function ParticleTitle() {
           ref={canvasRef}
           className="particle-title-canvas"
           aria-hidden="true"
+          tabIndex={-1}
         />
       </div>
       <p className="particle-title-hint">

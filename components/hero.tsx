@@ -1,10 +1,10 @@
 import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { HeroArt } from "@/components/hero-art";
-import { ParticleTitle } from "@/components/particle-title";
 import { AmbientSurface } from "@/components/ambient-surface";
+import { HeroArt } from "@/components/hero-art";
 import { MagneticLink } from "@/components/magnetic-link";
-import type { PostSummary } from "@/lib/types";
+import { ParticleTitle } from "@/components/particle-title";
 import { siteConfig } from "@/lib/config";
+import type { PostSummary } from "@/lib/types";
 
 export function Hero({
   latestPost,

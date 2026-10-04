@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { studioPalettes, type StudioPalette } from "@/lib/studio-palettes";
+import { type StudioPalette, studioPalettes } from "@/lib/studio-palettes";
 
 const PaletteContext = createContext<{
   palette: StudioPalette;

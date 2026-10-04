@@ -15,7 +15,7 @@ import { categories as knownCategories } from "@/lib/config";
 import type { PostSummary } from "@/lib/types";
 import { AmbientSurface } from "./ambient-surface";
 import { ManuscriptDesk, type ManuscriptSnippet } from "./manuscript-desk";
-import { changeFilter, ContentSwap } from "./page-motion";
+import { ContentSwap, changeFilter } from "./page-motion";
 
 export type LibraryView = "articles" | "categories" | "tags";
 const views = [

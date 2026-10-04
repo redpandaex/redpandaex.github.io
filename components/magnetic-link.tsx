@@ -1,10 +1,10 @@
 "use client";
 
 import { gsap } from "gsap";
-import { PageLink as Link } from "./page-motion";
 import { useEffect, useRef } from "react";
-import { useMotion } from "./motion-provider";
 import { ArticleLink } from "./article-transition";
+import { useMotion } from "./motion-provider";
+import { PageLink as Link } from "./page-motion";
 
 export function MagneticLink({
   href,

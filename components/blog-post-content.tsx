@@ -8,13 +8,13 @@ import {
   Minus,
   Plus,
 } from "lucide-react";
-import { PageLink as Link } from "./page-motion";
 import { useEffect, useRef, useState } from "react";
 import { BlogCardGrid } from "@/components/blog-card";
 import { Comments } from "@/components/comments";
 import { trackEvent, trackPageView } from "@/components/google-analytics";
 import { ViewCounter } from "@/components/view-counter";
 import type { BlogPost, Category, PostSummary } from "@/lib/types";
+import { PageLink as Link } from "./page-motion";
 import { ReadingContents, type ReadingHeading } from "./reading-contents";
 
 export function BlogPostContent({

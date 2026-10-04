@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { AboutContent } from "@/components/about-content";
 import { AboutPageSkeleton } from "@/components/about-page-skeleton";
-import { getRenderedAbout } from "@/lib/mdx-render";
 import { RouteSurface } from "@/components/page-motion";
 import { siteConfig } from "@/lib/config";
+import { getRenderedAbout } from "@/lib/mdx-render";
 
 export const metadata: Metadata = {
   title: `关于 ${siteConfig.author.name}`,
