@@ -172,7 +172,7 @@ export function createArticleParticles(
   const hidden = () => {
     if (document.hidden) done();
   };
-  const escape = (event: KeyboardEvent) => {
+  const onEscape = (event: KeyboardEvent) => {
     if (event.key === "Escape") done();
   };
   const lost = (event: Event) => {
@@ -184,7 +184,7 @@ export function createArticleParticles(
   window.addEventListener("wheel", cancel, { passive: true });
   window.addEventListener("touchmove", cancel, { passive: true });
   document.addEventListener("visibilitychange", hidden);
-  document.addEventListener("keydown", escape);
+  document.addEventListener("keydown", onEscape);
   try {
     renderer.render(scene, camera);
     frame = requestAnimationFrame(draw);
@@ -201,7 +201,7 @@ export function createArticleParticles(
     window.removeEventListener("wheel", cancel);
     window.removeEventListener("touchmove", cancel);
     document.removeEventListener("visibilitychange", hidden);
-    document.removeEventListener("keydown", escape);
+    document.removeEventListener("keydown", onEscape);
     geometry.dispose();
     material.dispose();
     renderer.dispose();

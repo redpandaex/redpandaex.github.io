@@ -1,10 +1,10 @@
 "use client";
 
 import { ArrowUpRight, FileText, Search, X } from "lucide-react";
-import { PageLink as Link } from "./page-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { PostSummary } from "@/lib/types";
+import { PageLink as Link } from "./page-motion";
 
 export function CommandPalette({ posts }: { posts: PostSummary[] }) {
   const dialog = useRef<HTMLDialogElement>(null);

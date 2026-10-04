@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ArticleTransitionProvider } from "@/components/article-transition";
 import { Footer } from "@/components/footer";
 import { GoogleAnalytics } from "@/components/google-analytics";
-import { Navbar } from "@/components/navbar";
 import { MotionProvider } from "@/components/motion-provider";
+import { Navbar } from "@/components/navbar";
 import { PaletteProvider } from "@/components/palette-provider";
-import { ArticleTransitionProvider } from "@/components/article-transition";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { ThemeProvider } from "@/components/theme-provider";
 import { siteConfig } from "@/lib/config";

@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
-import { PageLink as Link, RouteSurface } from "@/components/page-motion";
 import { AmbientSurface } from "@/components/ambient-surface";
+import { PageLink as Link, RouteSurface } from "@/components/page-motion";
 export default function NotFound() {
   return (
     <RouteSurface routeKey="not-found">

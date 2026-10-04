@@ -5,8 +5,8 @@ import { BlogPostContent } from "@/components/blog-post-content";
 import { BlogPostSkeleton } from "@/components/blog-post-skeleton";
 import { RouteSurface } from "@/components/page-motion";
 import {
-  getCategoryBySlug,
   getAllPosts,
+  getCategoryBySlug,
   getPostBySlug,
   getPostSlugs,
   getRelatedPosts,

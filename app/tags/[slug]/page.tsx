@@ -1,8 +1,8 @@
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
-import { PageLink as Link, RouteSurface } from "@/components/page-motion";
 import { notFound } from "next/navigation";
 import { ArticleExplorer } from "@/components/article-explorer";
+import { PageLink as Link, RouteSurface } from "@/components/page-motion";
 import { getAllTags, getPostsByTag } from "@/lib/mdx";
 import { summarizePost } from "@/lib/utils";
 export function generateStaticParams() {

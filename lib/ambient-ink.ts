@@ -51,7 +51,7 @@ export function createAmbientInk(
     context?.setTransform(ratio, 0, 0, ratio, 0, 0);
   };
   resize();
-  const useFallback = () => {
+  const activateFallback = () => {
     simulator?.destroy();
     simulator = null;
     canvas.style.opacity = "0";
@@ -84,7 +84,7 @@ export function createAmbientInk(
     canvas.dataset.renderer = "webgl";
     fallback.style.opacity = "0";
   } catch {
-    useFallback();
+    activateFallback();
   }
   const drawFallback = (time: number) => {
     if (!active || disposed || !context) {
@@ -138,7 +138,7 @@ export function createAmbientInk(
         simulator.start();
         canvas.style.opacity = "1";
       } catch {
-        useFallback();
+        activateFallback();
       }
     }
     if (!simulator && frame === null && context) {
@@ -156,7 +156,7 @@ export function createAmbientInk(
     event.preventDefault();
     // Remove before destroying the already-lost context to avoid recursion.
     canvas.removeEventListener("webglcontextlost", lost);
-    useFallback();
+    activateFallback();
     wake();
   };
   canvas.addEventListener("webglcontextlost", lost);

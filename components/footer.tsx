@@ -1,6 +1,6 @@
 import { ArrowUpRight, GitFork, Mail } from "lucide-react";
-import { PageLink as Link } from "./page-motion";
 import { siteConfig } from "@/lib/config";
+import { PageLink as Link } from "./page-motion";
 
 export function Footer() {
   return (
