@@ -18,9 +18,7 @@ export function WritingLibrary({
         <header className="library-heading">
           <span className="mono-label">02 / THE WRITING ROOM</span>
           <h1>
-            写下来，
-            <br />
-            <span>才算想明白。</span>
+            随笔
             <span className="library-star" aria-hidden="true">
               *
             </span>
