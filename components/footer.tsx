@@ -1,4 +1,4 @@
-import { ArrowUpRight, GitFork, Mail } from "lucide-react";
+import { GitFork } from "lucide-react";
 import { siteConfig } from "@/lib/config";
 import { PageLink as Link } from "./page-motion";
 
@@ -11,12 +11,6 @@ export function Footer() {
           <br />
           <span>继续创造。</span>
         </p>
-        <div className="footer-contact">
-          <span>有个有趣的想法？</span>
-          <a href={`mailto:${siteConfig.author.email}`}>
-            聊一聊 <ArrowUpRight size={23} />
-          </a>
-        </div>
       </div>
       <div className="footer-bottom">
         <span>
@@ -27,9 +21,6 @@ export function Footer() {
           <Link href="/about">关于</Link>
           <a href={siteConfig.social.github} target="_blank" rel="noreferrer">
             <GitFork size={16} /> GitHub
-          </a>
-          <a href={`mailto:${siteConfig.author.email}`}>
-            <Mail size={16} /> Email
           </a>
         </div>
       </div>

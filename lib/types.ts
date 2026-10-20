@@ -22,7 +22,6 @@ export interface Author {
   role: string;
   bio: string;
   avatar: string;
-  email: string;
   social: {
     github?: string;
     twitter?: string;

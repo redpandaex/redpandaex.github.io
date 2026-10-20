@@ -3,21 +3,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 const MotionContext = createContext<{
-  enabled: boolean;
   reducedMotion: boolean;
   active: boolean;
-  setEnabled: (value: boolean) => void;
 } | null>(null);
 
 export function MotionProvider({ children }: { children: React.ReactNode }) {
-  const [enabled, updateEnabled] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
-    try {
-      updateEnabled(localStorage.getItem("ui-motion") !== "off");
-    } catch {
-      /* Motion preferences work without storage. */
-    }
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const sync = () => setReducedMotion(media.matches);
     sync();
@@ -25,27 +17,16 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
     return () => media.removeEventListener("change", sync);
   }, []);
   useEffect(() => {
-    document.documentElement.dataset.motion =
-      enabled && !reducedMotion ? "on" : "off";
+    document.documentElement.dataset.motion = reducedMotion ? "off" : "on";
     return () => {
       delete document.documentElement.dataset.motion;
     };
-  }, [enabled, reducedMotion]);
-  const setEnabled = (value: boolean) => {
-    updateEnabled(value);
-    try {
-      localStorage.setItem("ui-motion", value ? "on" : "off");
-    } catch {
-      /* Storage is optional. */
-    }
-  };
+  }, [reducedMotion]);
   return (
     <MotionContext
       value={{
-        enabled,
         reducedMotion,
-        active: enabled && !reducedMotion,
-        setEnabled,
+        active: !reducedMotion,
       }}
     >
       {children}

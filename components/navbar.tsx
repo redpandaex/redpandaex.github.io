@@ -3,11 +3,12 @@
 import {
   BookOpen,
   Braces,
+  FolderGit2,
   GitFork,
   MoreHorizontal,
   Search,
-  Sparkles,
   User,
+  Wrench,
   X,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -16,18 +17,16 @@ import { CommandPalette } from "@/components/command-palette";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { siteConfig } from "@/lib/config";
 import type { PostSummary } from "@/lib/types";
-import { useMotion } from "./motion-provider";
 import { PageLink as Link } from "./page-motion";
 
-const icons = [Braces, BookOpen, User];
-const captions = ["STUDIO", "WRITING", "ABOUT"];
+const icons = [Braces, BookOpen, FolderGit2, Wrench, User];
+const captions = ["STUDIO", "WRITING", "PROJECTS", "TOOLS", "ABOUT"];
 
 export function Navbar({ posts }: { posts: PostSummary[] }) {
   const pathname = usePathname();
   const rootRef = useRef<HTMLElement>(null);
   const moreRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
-  const { active, enabled, reducedMotion, setEnabled } = useMotion();
   // biome-ignore lint/correctness/useExhaustiveDependencies: Route changes close the utility popover.
   useEffect(() => {
     setOpen(false);
@@ -138,17 +137,6 @@ export function Navbar({ posts }: { posts: PostSummary[] }) {
               <GitFork size={19} />
             </a>
           </div>
-          <button
-            type="button"
-            className="motion-toggle"
-            aria-label={active ? "关闭页面动效" : "开启页面动效"}
-            aria-pressed={active}
-            disabled={reducedMotion}
-            onClick={() => setEnabled(!enabled)}
-          >
-            <Sparkles size={15} />
-            <span>动效{active ? "开" : "关"}</span>
-          </button>
         </div>
         <span className="rail-caption" aria-hidden="true">
           SOFTWARE ENGINEER · KEEP MAKING

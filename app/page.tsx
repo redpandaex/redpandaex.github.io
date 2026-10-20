@@ -5,6 +5,7 @@ import { ArticleExplorer } from "@/components/article-explorer";
 import { Hero } from "@/components/hero";
 import type { ManuscriptSnippet } from "@/components/manuscript-desk";
 import { PageLink as Link, RouteSurface } from "@/components/page-motion";
+import { ProjectShowcase } from "@/components/project-showcase";
 import { getAllPosts } from "@/lib/mdx";
 import { summarizePost } from "@/lib/utils";
 
@@ -46,6 +47,29 @@ export default function Home() {
           </div>
           <ArticleExplorer posts={posts} compact snippets={snippets} />
         </AmbientSurface>
+      </section>
+      <section
+        className="site-container home-projects"
+        aria-labelledby="home-projects-title"
+      >
+        <div className="section-heading">
+          <div>
+            <h2 id="home-projects-title">
+              我的项目
+              <span className="heading-asterisk" aria-hidden="true">
+                *
+              </span>
+            </h2>
+            <p className="desk-description">
+              从日常需要出发，做点自己会用的东西。
+            </p>
+          </div>
+          <Link href="/projects" className="text-link">
+            查看项目
+            <ArrowUpRight size={19} />
+          </Link>
+        </div>
+        <ProjectShowcase compact />
       </section>
       <AnimatedElement className="site-container about-strip">
         <Braces size={38} />

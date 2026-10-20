@@ -36,9 +36,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseURL}projects/`,
-      lastModified: "2025-12-26",
+      lastModified: "2026-10-20",
       changeFrequency: "monthly",
       priority: 0.6,
     },
+    ...[
+      "tools/",
+      "tools/text-diff/",
+      "tools/image-compress/",
+      "tools/image-convert/",
+    ].map((route) => ({
+      url: `${baseURL}${route}`,
+      lastModified: "2026-10-20",
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
   ];
 }

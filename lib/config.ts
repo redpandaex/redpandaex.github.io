@@ -10,7 +10,6 @@ export const siteConfig: SiteConfig = {
     role: "软件工程师",
     bio: "写软件，也给好奇心留接口。",
     avatar: "/images/avatar.jpg",
-    email: "lxw.tech.dev@gmail.com",
     social: {
       github: "https://github.com/redpandaex",
       twitter: "https://x.com/lxw_xw",
@@ -25,6 +24,14 @@ export const siteConfig: SiteConfig = {
     {
       label: "文章",
       href: "/blog",
+    },
+    {
+      label: "项目",
+      href: "/projects",
+    },
+    {
+      label: "工具",
+      href: "/tools",
     },
     {
       label: "关于",
