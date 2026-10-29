@@ -1,8 +1,8 @@
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { AmbientSurface } from "@/components/ambient-surface";
 import { HeroArt } from "@/components/hero-art";
+import { KineticTitle } from "@/components/kinetic-title";
 import { MagneticLink } from "@/components/magnetic-link";
-import { ParticleTitle } from "@/components/particle-title";
 import { siteConfig } from "@/lib/config";
 import type { PostSummary } from "@/lib/types";
 
@@ -29,7 +29,7 @@ export function Hero({
           <span>一个爱折腾的{siteConfig.author.role}。</span>
         </p>
         <div className="studio-title-stage">
-          <ParticleTitle />
+          <KineticTitle variant="home" />
           <AmbientSurface kind="orbit" className="studio-sticker">
             <HeroArt />
             <span className="sticker-caption">my digital alter ego ↗</span>

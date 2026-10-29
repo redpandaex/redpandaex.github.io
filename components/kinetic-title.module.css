@@ -1,0 +1,240 @@
+.stage {
+  position: relative;
+  height: clamp(420px, 62dvh, 650px);
+  margin-top: 30px;
+  isolation: isolate;
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  contain: layout paint;
+}
+
+.stage .title {
+  position: absolute;
+  inset: 16px 0 auto 0;
+  margin: 0;
+  font-size: clamp(90px, 17.2vw, 244px);
+  font-weight: 750;
+  letter-spacing: -0.075em;
+  line-height: 0.94;
+  text-wrap: nowrap;
+  pointer-events: none;
+}
+
+.line {
+  display: block;
+  width: max-content;
+}
+
+.line + .line {
+  margin-top: 10px;
+  margin-left: 9%;
+  color: var(--primary);
+}
+
+.line > [data-glyph] {
+  display: inline-block;
+}
+
+.baseline {
+  display: inline-block;
+  width: 0;
+  height: 0;
+}
+
+.lens,
+.pieces {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.lens {
+  opacity: 0;
+}
+
+.pieces {
+  visibility: hidden;
+}
+
+.stage[data-renderer="lens"][data-phase="ready"] .lens {
+  opacity: 1;
+}
+
+.stage[data-phase="falling"] .pieces,
+.stage[data-phase="returning"] .pieces {
+  visibility: visible;
+}
+
+.trigger {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 4px;
+  padding: 0;
+  background: transparent;
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+
+.trigger:disabled {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.trigger:focus-visible {
+  outline-offset: -6px;
+}
+
+.floor {
+  position: absolute;
+  inset: auto 0 12px;
+  height: 1px;
+  background: var(--border);
+  pointer-events: none;
+}
+
+.floor::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 48px;
+  height: 2px;
+  background: var(--primary);
+}
+
+.stage[data-dragging="true"],
+.stage[data-dragging="true"] [data-kinetic-piece] {
+  cursor: grabbing;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 70px;
+}
+
+.hint {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted-foreground);
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-width: 126px;
+  min-height: 46px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 30px;
+  padding: 12px 22px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.action:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+@media (max-width: 760px) {
+  .stage {
+    height: clamp(360px, 54dvh, 480px);
+    margin-top: 30px;
+  }
+
+  .stage .title {
+    top: 18px;
+    font-size: clamp(58px, 18.2vw, 138px);
+    letter-spacing: -0.075em;
+  }
+
+  .line + .line {
+    margin-top: 14px;
+    margin-left: 6%;
+  }
+
+  .controls {
+    gap: 18px;
+    min-height: 90px;
+  }
+
+  .action {
+    min-width: 112px;
+    padding-inline: 18px;
+  }
+
+  .hint {
+    max-width: 200px;
+    font-size: 11px;
+  }
+}
+
+.home {
+  --title-size: clamp(100px, 16.5vw, 244px);
+}
+
+.home .stage {
+  height: calc(var(--title-size) * 1.88 + 48px);
+  margin-top: 0;
+}
+
+.home .stage[data-phase="falling"],
+.home .stage[data-phase="returning"] {
+  z-index: 3;
+  /* Letters stay above the sticker; empty space still reaches its controls. */
+  pointer-events: none;
+}
+
+.home .title {
+  top: 0;
+  font-size: var(--title-size);
+}
+
+.home .line + .line {
+  margin-top: 10px;
+  margin-left: 9%;
+}
+
+.home .floor {
+  opacity: 0;
+}
+
+.home .stage[data-phase="falling"] .floor,
+.home .stage[data-phase="returning"] .floor {
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .home {
+    --title-size: clamp(64px, 20.6vw, 124px);
+  }
+
+  .home .line + .line {
+    margin-left: 5%;
+  }
+}
+
+.stage[data-phase="falling"] .title,
+.stage[data-phase="returning"] .title,
+.stage[data-renderer="lens"][data-phase="ready"] .title {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lens {
+    display: none;
+  }
+}
